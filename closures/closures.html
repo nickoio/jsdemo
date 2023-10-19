@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script>
+
+    var a = 5; // объявление var создаёт свойство window.a
+    alert( window.a ); // 5
+
+    window.a = 5;
+    alert( a ); // 5
+// При создании функции с использованием new Function, её свойство [[Scope]]
+    // ссылается не на текущий LexicalEnvironment, а на window
+    var a = 1;
+    function getFunc() {
+        var a = 2;
+
+        var func = new Function('', 'alert(a)');
+
+        return func;
+    }
+    getFunc()(); // 1, из window
+
+    var a = 1;
+    function getFunc() {
+        var a = 2;
+
+        var func = function() { alert(a); };
+
+        return func;
+    }
+    getFunc()(); // 2, из LexicalEnvironment функции getFunc
+
+
+    //////////////////////
+    function makeCounter() {
+        var currentCount = 1;
+
+        return { // возвратим объект вместо функции
+            getNext: function() {
+                return currentCount++;
+            },
+
+            set: function(value) {
+                currentCount = value;
+            },
+
+            reset: function() {
+                currentCount = 1;
+            }
+        };
+    }
+
+    var counter = makeCounter();
+
+    alert( counter.getNext() ); // 1
+    alert( counter.getNext() ); // 2
+
+    counter.set(5);
+    alert( counter.getNext() ); // 5
+    ////////////////////////
+
+    function makeCounter() {
+        var currentCount = 1;
+
+        // возвращаемся к функции
+        function counter() {
+            return currentCount++;
+        }
+
+        // ...и добавляем ей методы!
+        counter.set = function(value) {
+            currentCount = value;
+        };
+
+        counter.reset = function() {
+            currentCount = 1;
+        };
+
+        return counter;
+    }
+
+    var counter = makeCounter();
+
+    alert( counter() ); // 1
+    alert( counter() ); // 2
+
+    counter.set(5);
+    alert( counter() ); // 5
+    ////////////////////////
+
+    +function() {
+        alert('Вызов на месте');
+    }();
+
+    !function() {
+        alert('Так тоже будет работать');
+    }();
+
+</script>
+
+</body>
+</html>

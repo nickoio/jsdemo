@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MyTitle</title>
+</head>
+<body>
+
+ <!--===================================================================-->
+<!--if 2 or more "defer" -> order of script is the same -->
+<p>Before</p>
+<script src="basicUtils/async.js" async></script>
+<script src="basicUtils/defer.js" defer></script>
+<p>After</p>
+
+ <script src="basic.js"></script>
+
+<script>
+
+  typeof undefined // "undefined"
+  typeof 0 // "number"  // Number can be Nan, Infinity
+  typeof true // "boolean"
+  typeof "foo" // "string"
+  typeof {} // "object"
+  typeof null // "object"  (1) Official bug. Should be null
+  typeof function(){} // "function"  (2) Is not type. Just show
+
+  var apples = "2";
+  var oranges = "3";
+
+  alert( +apples + +oranges ); // 5, число, оба операнда предварительно преобразованы в числа
+  alert( 0 === false ); // false, т.к. типы различны
+
+  var a = +"123"; // 123
+  var a = Number("123"); // 123, тот же эффект
+
+  alert( !!"0" ); // true
+  alert( !!" " ); // любые непустые строки, даже из пробелов - true!
+
+  var access = parseInt("11000", 2); // получаем число из строки
+  alert( access ); // 24, число с таким 2-ным представлением
+  var access2 = access.toString(2); // обратно двоичную строку из числа
+  alert( access2 ); // 11000
+
+  alert( ~~12.345 ); // 12
+  alert( 12.345 ^ 0 ); // 12
+
+  alert( String(null) === "null" ); // true
+
+  // Значения null и undefined равны == друг другу и не равны чему бы то ни было ещё. Это жёсткое правило буквально прописано в спецификации языка.
+  // При преобразовании в число null становится 0, а undefined становится NaN.
+  // NaN – единственное в своем роде, которое не равно ничему, включая себя
+
+  // ~n == 0 только если n == -1
+
+  var x = 1;
+  switch(x) {
+    case 1:  // if (x === 1)
+    //break
+    default:
+    //break
+  }
+// Function Declaration
+  function showMessage(from, text) {
+    if (text === undefined) {
+      text = 'текст не передан';
+    }
+// or
+    text = text || 'текст не передан';
+  }
+
+  // Function Expression
+  var sayHi = function(person) {
+    alert( "Привет, " + person );
+  };
+  // функции, объявленные как Function Declaration, создаются интерпретатором до выполнения кода
+  // Поэтому их можно вызвать до объявления
+
+  // Named Function Expression
+  var f = function sayHi(person) { /* тело функции */ };
+  // Имя функционального выражения (sayHi) имеет особый смысл. Оно доступно только изнутри самой функции (f).
+    // Кроме того, имя NFE нельзя перезаписать
+  // example:
+  var f = function factorial(n) {
+    return n ? n*factorial(n-1) : 1;
+  };
+  var g = f;  // скопировали ссылку на функцию-факториал в g
+  f = null;
+  alert( g(5) ); // 120, работает!
+
+  // new Function
+  var sum = new Function('a,b', ' return a+b; ');
+
+
+ // debugger; // <-- отладчик остановится тут
+
+  // console.log("значение", i);  // from browser F12
+
+  alert( -1 / 0 ); // -Infinity
+  alert( 3e-5 ); // 0.00003
+  alert( 0xFF ); // 255 в шестнадцатиричной системе
+
+  var n = 0 / 0;
+  alert( isNaN(n) ); // true
+
+  alert( isFinite(1) ); // true
+  alert( isFinite(Infinity) ); // false
+  alert( isFinite(NaN) ); // false
+  alert( +"12test" ); // NaN
+
+  alert( parseInt('12px') ); // 12
+  alert( parseInt('FF', 16) ); // 255
+  alert( parseFloat('12.3') )
+
+  // точная проверка на число
+  function isNumeric(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+  }
+
+  var n = 1234567890;
+  alert( n.toString(36) ); // kf12oi
+
+  alert( Math.floor(3.1) );  // 3
+  alert( Math.ceil(3.1) );   // 4
+  alert( Math.round(3.1) );  // 3
+
+  var n = 12.34;
+  alert( n.toFixed(1) ); // "12.3"
+
+  // Math.sqrt(x)
+  // Math.log(x) // Возвращает натуральный (по основанию e) логарифм x
+  // Math.pow(x, exp)
+  // Math.abs(x)
+  // Math.exp(x)  // Возвращает ex, где e – основание натуральных логарифмов.
+  // Math.max(a, b, c...)
+  // Math.random() // псевдослучайное число в интервале [0,1)
+
+  var str = "My\n"; // 3 символа. Третий - перевод строки
+  alert( str.length ); // 3
+  alert( str.charAt(0) );
+  alert( str[0] );
+  str.toLocaleLowerCase();
+
+  var str = "Widget with id";
+  alert( str.indexOf("id") ); // 1, т.к. "id" найден, начиная с позиции 1
+  alert(str.indexOf("id", 2)) // 12, поиск начат с позиции 2
+
+  var str = "stringify";
+  alert(str.substring(0,1)); // "s", символы с позиции 0 по 1 не включая 1.
+  str = str.substr(2,4); // ring, со 2-й позиции 4 символа
+  // slice(start [, end])
+
+
+  alert( "testme".substring(-2) ); // "testme", -2 становится 0
+
+  alert( "testme".substring(4, -1) ); // "test"
+  // -1 становится 0 -> получили substring(4, 0)
+  // 4 > 0, так что аргументы меняются местами -> substring(0, 4) = "test"
+
+  alert( "testme".slice(-2) ); // "me", от 2 позиции с конца
+  alert( "testme".slice(1, -1) ); // "estm", от 1 позиции до первой с конца.
+
+
+</script>
+
+</body>
+</html>

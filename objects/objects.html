@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script>
+
+    var user = {
+        firstName: 'Василий',
+        toString: function() {
+            return 'Пользователь ' + this.firstName;  // or return 123;
+        }
+    };
+
+    var isExsists = user.hasOwnProperty(firstName);
+
+    alert( user );  // Пользователь Василий
+
+    if ("firstName" in user) {
+      alert( "Свойство firstName существует!" );
+    }
+
+    user['любимый стиль музыки'] = 'Джаз';
+    user.secondName = 'Ivanov';
+
+    for (var key in user) {
+      alert( "Ключ: " + key + " значение: " + user[key] );
+    }
+
+    var room = {
+        number: 777,
+        valueOf: function() { return this.number; },
+        toString: function() { return this.number; }
+    };
+    alert( +room );  // 777, вызвался valueOf
+    delete room.valueOf; // valueOf удалён
+    alert( +room );  // 777, вызвался toString
+
+    alert( new Date() ); // toString: Дата в виде читаемой строки
+    alert( +new Date() ); // valueOf: кол-во миллисекунд, прошедших с 01.01.1970
+
+    var obj = {
+        valueOf: function() {
+            return 1;
+        }
+    };
+    alert( obj == true ); // true
+
+    var obj = {
+        valueOf: function() {
+            return 1;
+        }
+    };
+    alert( obj + "test" ); // 1test
+
+    // бинарный плюс для даты toString, для остальных объектов valueOf
+    alert( new Date + "" ); // "строка даты"
+
+    var value = new Boolean(false);
+    alert( value ); // выводит false, все ок..
+    if (value) {
+        alert( true ); // ..но тогда почему выполняется alert в if ?!?
+    }
+
+// Конструктор
+    function Animal(name) {
+        this.name = name;
+        this.canWalk = true;
+    }
+    var animal = new Animal("ёжик");
+
+    function BigAnimal() {
+        this.name = "Мышь";
+        return { name: "Годзилла" };  // <-- возвратим объект
+    }
+    alert( new BigAnimal().name );  // Годзилла, получили объект вместо this
+
+    function BigAnimal() {
+        this.name = "Мышь";
+        return "Годзилла"; // <-- возвратим примитив
+    }
+    alert( new BigAnimal().name ); // Мышь, получили this (а Годзилла пропал)
+
+    var animal = new BigAnimal; // <-- без скобок
+    // то же самое что
+    var animal = new BigAnimal();
+
+/////////////////////////////
+    function User(name) {
+        this.name = name;
+
+        this.sayHi = function() {
+            alert( "Моё имя: " + this.name );
+        };
+    }
+
+    var ivan = new User("Иван");
+
+    ivan.sayHi(); // Моё имя: Иван
+
+    /*
+     ivan = {
+     name: "Иван",
+     sayHi: функция
+     }
+     */
+    /////////////////////////////
+    function User(firstName, lastName) {
+        // вспомогательная переменная
+        var phrase = "Привет";
+
+        //  вспомогательная вложенная функция
+        function getFullName() {
+            return firstName + " " + lastName;
+        }
+
+        this.sayHi = function() {
+            alert( phrase + ", " + getFullName() ); // использование
+        };
+    }
+
+    var vasya = new User("Вася", "Петров");
+    vasya.sayHi(); // Привет, Вася Петров
+
+    /////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+</body>
+</html>
