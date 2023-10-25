@@ -7,7 +7,7 @@ myArray.push(i++);
 myArray.push(i++);
 
 
-alert(myArray);
+console.log(myArray);
 
 
 var ourArray = [];

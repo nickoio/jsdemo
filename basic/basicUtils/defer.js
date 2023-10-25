@@ -1,2 +1,2 @@
 "use strict";
-alert("hello, defer");
+console.log("hello, defer");
