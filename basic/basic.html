@@ -113,20 +113,30 @@
   // Иначе говоря, оператор ?? возвращает первый аргумент, если он не null/undefined, иначе второй.
 
   var x = 1;
+  let b = 0;
   switch(x) {
-    case 1:  // if (x === 1)
+    case b + 1:  // if (x === b + 1)
     //break
     default:
     //break
   }
 // Function Declaration
   function showMessage(from, text) {
-    if (text === undefined) {
+    if (text === undefined) {  // call as showMessage('myname')
       text = 'текст не передан';
     }
 // or
     text = text || 'текст не передан';
   }
+
+//   function showMessage(from, text = "текст не добавлен") {  // text значение по умолчанию
+//   alert( from + ": " + text );
+// }
+
+// function showMessage(from, text = anotherFunction()) {
+//   // anotherFunction() выполнится только если не передан text
+//   // результатом будет значение text
+// }
 
   // Function Expression
   var sayHi = function(person) {
@@ -134,6 +144,7 @@
   };
   // функции, объявленные как Function Declaration, создаются интерпретатором до выполнения кода
   // Поэтому их можно вызвать до объявления
+  
 
   // Named Function Expression
   var f = function sayHi(person) { /* тело функции */ };
@@ -149,6 +160,8 @@
 
   // new Function
   var sum = new Function('a,b', ' return a+b; ');
+
+  let sum2 = (a, b) => a + b;
 
 
  // debugger; // <-- отладчик остановится тут
