@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>MyTitle</title>
+    <style>
+        body {
+            font-size: 30px
+        }
+
+        a {
+            font-size: 20px
+        }
+    </style>
+</head>
+
+<body>
+
+    <script>
+document.body.innerHTML = '';
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        document.body.innerHTML += 'alert, prompt, confirm' + '<br><br>'
+
+        // alert, prompt, confirm
+
+        // alert("Hello");
+        // result = prompt(title, [default - Текст для отображения в окне]);  // -> text or undefined
+        // let test = prompt("Test", ''); // <-- для IE
+        // result = confirm(question); // true, если нажата OK
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        document.body.innerHTML += 'typeof' + "<br><br>"
+
+        typeof undefined // "undefined"
+        typeof 0 // "number"  // Number can be Nan, Infinity
+        typeof 10n // "bigint"
+        typeof true // "boolean"
+        typeof "foo" // "string"
+        typeof {} // "object"
+        typeof Math // "object"
+        typeof null // "object"  (1) Official bug. Should be null
+        typeof function () { } // "function"  (2) Is not type. Just show
+        typeof alert // "function" (2) Is not type. Just show
+        typeof Symbol("id") // "symbol"
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+
+    </script>
+
+    <br><br><br>
+    <a href="basic.html">basic</a>
+
+</body>
+
+</html>
