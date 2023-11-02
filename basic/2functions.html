@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Functions</title>
+    <style>
+        body {
+            font-size: 30px
+        }
+
+        a {
+            font-size: 20px
+        }
+    </style>
+</head>
+
+<body>
+
+    <script>
+        document.body.innerHTML = '';
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        document.body.innerHTML += 'Function Declaration' + "<br><br>"
+
+        // Function Declaration
+        function showMessage(from, text) {
+            if (text === undefined) {  // call as showMessage('myname')
+                text = 'текст не передан';
+            }
+            // or
+            text = text || 'текст не передан';
+        }
+        // функции, объявленные как Function Declaration, создаются интерпретатором до выполнения кода
+        // Поэтому их можно вызвать до объявления
+
+        // Function Expression
+        var sayHi = function (person) {
+            console.log("Привет, " + person);
+        };
+
+        // Named Function Expression
+        var f = function sayHi(person) { /* тело функции */ };
+        // Имя функционального выражения (sayHi) имеет особый смысл. Оно доступно только изнутри самой функции (f).
+        // Кроме того, имя NFE нельзя перезаписать
+        // example:
+        var f = function factorial(n) {
+            return n ? n * factorial(n - 1) : 1;
+        };
+        var g = f;  // скопировали ссылку на функцию-факториал в g
+        f = null;
+        console.log(g(5)); // 120, работает!
+
+
+        // new Function
+        var sum = new Function('a,b', ' return a+b; ');
+
+        // Arrow function expressions
+        let sum2 = (a, b) => a + b;
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        document.body.innerHTML += 'Argument by default' + "<br><br>"
+        
+        //   function showMessage(from, text = "текст не добавлен") {  // text значение по умолчанию
+        //   alert( from + ": " + text );
+        // }
+
+        // function showMessage(from, text = anotherFunction()) {
+        //   // anotherFunction() выполнится только если не передан text
+        //   // результатом будет значение text
+        // }
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+    </script>
+
+    <br>
+    <a href="../index.html">home</a>
+
+</body>
+
+</html>
