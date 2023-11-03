@@ -121,6 +121,18 @@
         console.log("testme".slice(-2)); // "me", от 2 позиции с конца
         console.log("testme".slice(1, -1)); // "estm", от 1 позиции до первой с конца.
 
+
+        
+
+        console.log(new Date + ""); // toString, бинарный плюс для даты toString, для остальных объектов valueOf
+        console.log("" + new Date); // toString
+        console.log(new Date()); // toString
+
+
+        console.log(+new Date()); // valueOf: кол-во миллисекунд, прошедших с 01.01.1970
+
+        console.log(5 + ""); // valueOf
+
         ////////////////////////////////////////////////////////////////////////////////////
 
         document.body.innerHTML += 'typeof & Type Conversion' + "<br><br>"
@@ -201,7 +213,7 @@
 
         ////////////////////////////////////////////////////////////////////////////////////
 
-  
+
     </script>
 
     <br>
