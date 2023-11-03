@@ -60,6 +60,8 @@
         console.log(-1 / 0); // -Infinity
         console.log(3e-5); // 0.00003
         console.log(0xFF); // 255 в шестнадцатиричной системе
+        // let a = 0b11111111; // двоичная (бинарная) форма записи числа 255
+        // let b = 0o377; // восьмеричная форма записи числа 255
 
         var n = 0 / 0;
         console.log(isNaN(n)); // true
@@ -78,8 +80,21 @@
             return !isNaN(parseFloat(n)) && isFinite(n);
         }
 
+        // Методы Number.isNaN и Number.isFinite – это более «строгие» версии функций isNaN и isFinite.
+
+        // Существует специальный метод Object.is, который сравнивает значения примерно как ===, но более надёжен в двух особых ситуациях:
+        // Работает с NaN: Object.is(NaN, NaN) === true, здесь он хорош.
+        // Значения 0 и -0 разные: Object.is(0, -0) === false
+        // Во всех других случаях Object.is(a, b) идентичен a === b
+        // такой трюк можно встретить только в старом коде, потому что в новом он просто не нужен: есть метод .includes
+
         var n = 1234567890;
         console.log(n.toString(36)); // kf12oi
+
+        // Если мы поставим одну точку: 123456.toString(36), тогда это будет ошибкой, 
+        // поскольку синтаксис JavaScript предполагает, что после первой точки начинается десятичная часть
+        console.log(123456..toString(36)); // 2n9c
+        // Также можно записать как (123456).toString(36).
 
         console.log(Math.floor(3.1));  // 3
         console.log(Math.ceil(3.1));   // 4
@@ -87,6 +102,13 @@
 
         var n = 12.34;
         console.log(n.toFixed(1)); // "12.3"
+
+        // problem:
+        console.log(0.1 + 0.2 == 0.3); // false - // 0.30000000000000004
+        // обойти проблему
+        let sum = 0.1 + 0.2;
+        console.log(sum.toFixed(2)); // 0.30 - string
+        console.log(+sum.toFixed(2)); // 0.3 - number
 
         // Math.sqrt(x)
         // Math.log(x) // Возвращает натуральный (по основанию e) логарифм x
@@ -100,6 +122,8 @@
         console.log(str.length); // 3
         console.log(str.charAt(0));
         console.log(str[0]);
+        console.log(str.at(-2));   // y   
+        console.log(str[-2]); // undefined
         str.toLocaleLowerCase();
 
         var str = "Widget with id";
@@ -121,17 +145,64 @@
         console.log("testme".slice(-2)); // "me", от 2 позиции с конца
         console.log("testme".slice(1, -1)); // "estm", от 1 позиции до первой с конца.
 
+        console.log("Widget with id".includes("Widget")); // true
+        console.log("Midget".includes("id", 3)); // false, поиск начат с позиции 3
+        console.log("Widget".startsWith("Wid")); // true, "Wid" — начало "Widget"
+        console.log("Widget".endsWith("get")); // true, "get" — окончание "Widget"
 
-        
+        console.log("z".codePointAt(0)); // 122
+        console.log("Z".codePointAt(0)); // 90
+        console.log(String.fromCodePoint(90)); // Z
 
+        // Вызов str.localeCompare(str2) возвращает число, которое показывает, какая строка больше в соответствии с правилами языка:
+        // Отрицательное число, если str меньше str2.
+        // Положительное число, если str больше str2.
+        // 0, если строки равны.
+
+        // str.trim() — убирает пробелы в начале и конце строки.
+        // str.repeat(n) — повторяет строку n раз.
+
+        ////////
+        console.log(5 + ""); // valueOf
+
+        // wrapers
+        // Есть 7 примитивных типов: string, number, boolean, symbol, null, undefined и bigint.
+        // null/undefined не имеют методов
+
+        // Конструкторы String/Number/Boolean предназначены только для внутреннего пользования, 
+        // это тоже возможно по историческим причинам, но очень не рекомендуется. // new Number(0)
+
+        // С другой стороны, использование функций String/Number/Boolean без оператора new – вполне разумно и полезно 
+        // let num = Number("123"); // превращает строку в число        
+
+        console.log("=================");
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        document.body.innerHTML += 'Dates' + '<br><br>'
+
+
+        // next output the same - Sat Nov 04 2023 00:32:11 GMT+0200 (Israel Standard Time)
+        console.log(new Date);
         console.log(new Date + ""); // toString, бинарный плюс для даты toString, для остальных объектов valueOf
         console.log("" + new Date); // toString
         console.log(new Date()); // toString
 
+        new Date(2011, 0, 1, 0, 0, 0, 0); // // 1 января 2011, 00:00:00
+        new Date(2011, 0, 1); // то же самое, часы/секунды по умолчанию равны 0
 
-        console.log(+new Date()); // valueOf: кол-во миллисекунд, прошедших с 01.01.1970
+        console.log(new Date(2011, 0, 1, 2, 3, 4, 567)); // 1.01.2011, 02:03:04.567
 
-        console.log(5 + ""); // valueOf
+
+        console.log(+new Date()); // valueOf: кол-во миллисекунд, прошедших с 01.01.1970  
+
+        // 24 часа после 01.01.1970 GMT+0
+        var Jan02_1970 = new Date(3600 * 24 * 1000);
+        console.log(Jan02_1970);
+
+
+        console.log("=================");
+
 
         ////////////////////////////////////////////////////////////////////////////////////
 
@@ -187,7 +258,10 @@
         // При преобразовании в число null становится 0, а undefined становится NaN.
         // NaN – единственное в своем роде, которое не равно ничему, включая себя
 
+        // для 32-разрядных целых чисел значение ~n равно -(n+1)
         // ~n == 0 только если n == -1
+        // Соответственно, прохождение проверки if ( ~str.indexOf("…") ) означает, что результат indexOf отличен от -1, совпадение есть
+        // Просто запомните: if (~str.indexOf(…)) означает «если найдено».
 
         let age = Number("Любая строка вместо числа"); // NaN, преобразование не удалось
         Number(null) // 0
