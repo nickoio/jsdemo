@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->  <!-- ??? -->
     <title>MyTitle</title>
     <style>
         body {
@@ -15,6 +16,19 @@
     </style>
 </head>
 
+ <!--
+ Тег <script> можно вставить в раздел <head> и в <body> или после закрывающего тега </body> в зависимости от того, когда нужно загрузить JavaScript.
+ Как правило, код JavaScript размещается внутри раздела <head>, что позволяет отделить его от основного содержимого документа HTML.
+Однако если скрипт должен запускаться в определенной точке разметки страницы, его нужно размещать именно в этой точке. Обычно она находится внутри раздела <body>.
+
+Click CTRL + U in an HTML page, or right-click on the page and select "View Page Source"
+
+Double quotes around attribute values are the most common in HTML, but single quotes can also be used.
+
+HTML headings are defined with the <h1> to <h6> tags.
+Browsers automatically add some white space (a margin) before and after a heading.
+ -->
+
 <body>
     <a href="basic/1basic.html">Basic</a>
     <br>
@@ -24,6 +38,26 @@
     <br>
     <a href="basic/4arrays.html">Arrays</a>
     <br>
+
+	<hr>
+	<a href="myhtml/myhtml.html">myhtml demo</a> <br>
+	<a href="myhtml/mytable.html">mytable demo</a>
+	<hr>
+    
+    <h1 style="font-size:60px;">Heading 1</h1>
+	<h1 style="font-size:60px;">Heading 6</h1>
+
+	<img src="img/w3schools.jpg" alt="W3Schools.com" width="104" height="142">    <!--alternative text (alt)  -->
+	<!-- 
+	or <img src="img/w3schools.jpg" alt="W3Schools.com" style="width:500px;height:600px;">  
+	
+	The width, height, and style attributes are all valid in HTML.
+	However, we suggest using the style attribute. It prevents styles sheets from changing the size of images
+	--> 
+
+    <br>
+	<p title="I'm a tooltip" style="color:red;">This is a red paragraph with tooltip.</p>
+	<hr>
 
 </body>
 
