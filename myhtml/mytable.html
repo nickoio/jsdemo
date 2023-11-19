@@ -1,9 +1,39 @@
 <!DOCTYPE html>
 <html>
+
+
+<!-- 
+  By default, table headers are bold and centered:
+To left-align the table headers, use the CSS text-align property: 
+-->
 <style>
 table, th, td {
   border:1px solid black;
 }
+
+
+div.mycontainer {
+  width:100%;
+  overflow:auto;
+}
+div.mycontainer div {
+  width:33%;  
+  float:left;
+  /* display: inline-block; */ 
+}
+
+.mycontainer2 {
+  display: flex;
+}
+.mycontainer2 > div {
+  width:33%;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 33% 33% 33%;
+}
+
 </style>
 	<!-- 
 		To avoid having double borders like in the example above, set the CSS border-collapse property to collapse.
@@ -22,17 +52,21 @@ table, th, td {
 		}
 	-->
 
-
-
+  <!-- Each th element represents a table cell. -->
+  <!-- To use the first column as table headers, define the first cell in each row as a <th> element: -->
+  <!-- td stands for table data. -->
 
 
 <body>
 
+  <!-- Use the style attribute with the width or height properties to specify the size of a table, row or column. -->
+  <!-- To set the size of a specific column, add the style attribute on a <th> or <td> element: -->
+  <!-- To set the height of a specific row, add the style attribute on a table row element: -->
 <h2>A basic HTML table</h2>
 
 <table style="width:100%">
   <tr>
-    <th>Company</th>
+    <th style="width:40%">Company</th>
     <th>Contact</th>
     <th>Country</th>
   </tr>
@@ -50,6 +84,215 @@ table, th, td {
 
 <p>To understand the example better, we have added borders to the table.</p>
 
+
+<!-- 
+You can have a header that spans over two or more columns.
+To do this, use the colspan attribute on the <th> element: 
+
+To add a caption to a table, use the <caption> tag:
+  -->
+<table style="width:30%">
+  <caption>Employee names</caption>
+  <tr>
+    <th colspan="2">Name</th>
+    <th>Age</th>
+  </tr>
+  <tr>
+    <td>Jill</td>
+    <td>Smith</td>
+    <td>50</td>
+  </tr>
+  <tr>
+    <td>Eve</td>
+    <td>Jackson</td>
+    <td>94</td>
+  </tr>
+</table>
+
+<br><br><br>
+
+<!-- To make a cell span over multiple rows, use the rowspan attribute: -->
+<table>
+  <tr>
+    <th>Name</th>
+    <td>Jill</td>
+  </tr>
+  <tr>
+    <th rowspan="2">Phone</th>
+    <td>555-1234</td>
+  </tr>
+  <tr>
+    <td>555-8745</td>
+</tr>
+</table>
+
+<br><br>
+<p>Unordered HTML List</p>
+<!-- The list items will be marked with bullets (small black circles) by default: -->
+<ul>
+  <li>Coffee</li>
+  <li>Tea</li>
+  <li>Milk</li>
+</ul>
+
+<br><br>
+<p>Ordered HTML List</p>
+<ol>
+  <li>Coffee</li>
+  <li>Tea</li>
+  <li>Milk</li>
+</ol>
+
+<br><br>
+<p>HTML Description Lists</p>
+<dl>
+  <dt>Coffee</dt>
+  <dd>- black hot drink</dd>
+  <dt>Milk</dt>
+  <dd>- white cold drink</dd>
+</dl>
+
+<br><br>
+<!-- 
+Two commonly used block elements are: <p> and <div>.
+The <p> element defines a paragraph in an HTML document.
+The <div> element defines a division or a section in an HTML document. 
+
+A block-level element always starts on a new line, and the browsers automatically add some space (a margin) before and after the element.
+A block-level element always takes up the full width available (stretches out to the left and right as far as it can).
+
+Here are the block-level elements in HTML:
+<address><article><aside><blockquote><canvas><dd><div><dl><dt><fieldset><figcaption><figure><footer>
+<form><h1>-<h6><header><hr><li><main><nav><noscript><ol><p><pre><section><table><tfoot><ul><video>
+-->
+
+
+<!-- 
+An inline element does not start on a new line.
+An inline element only takes up as much width as necessary.
+This is a <span> element inside a paragraph.
+
+Here are the inline elements in HTML:
+<a><abbr><acronym><b><bdo><big><br><button><cite><code><dfn><em><i><img><input><kbd><label><map>
+<object><output><q><samp><script><select><small><span><strong><sub><sup><textarea><time><tt><var>  
+-->
+
+<!-- 
+The <div> element is often used as a container for other HTML elements.
+The <div> element has no required attributes, but style, class and id are common.
+When used together with CSS, the <div> element can be used to style blocks of content:
+
+The <div> element is often used to group sections of a web page together.
+ -->
+ <div style="background-color:black;color:white;padding:20px;">
+  <h2>London</h2>
+  <p>London is the capital city of England. It is the most populous city in the United Kingdom, with a metropolitan area of over 13 million inhabitants.</p>
+</div>
+
+<div style="background-color:#D9EEE1;">
+  <h2>Rome</h2>
+  <p>Rome is the capital city of Italy.</p>
+  <p>Rome has almost 3 million inhabitants.</p>
+</div>
+
+
+<!-- The CSS float property is used for positioning and formatting content and allow elements float next to each other instead of on top of each other. -->
+<!-- 
+If you change the <div> element's display property from block to inline-block, the <div> elements will no 
+longer add a line break before and after, and will be displayed side by side instead of on top of each other. 
+-->
+
+<div class="mycontainer">
+
+  <div style="background-color:#FFF4A3;">
+    <h2>London</h2>
+    <p>London is the capital city of England.</p>
+    <p>London has over 13 million inhabitants.</p>
+  </div>
+  
+  <div style="background-color:#FFC0C7;">
+    <h2>Oslo</h2>
+    <p>Oslo is the capital city of Norway.</p>
+    <p>Oslo has over 600.000 inhabitants.</p>
+  </div>
+  
+  <div style="background-color:#D9EEE1;">
+    <h2>Rome</h2>
+    <p>Rome is the capital city of Italy.</p>
+    <p>Rome has almost 3 million inhabitants.</p>
+  </div>
+
+</div>
+
+
+<br>
+<!-- 
+The CSS Flexbox Layout Module was introduced to make it easier to design flexible responsive layout structure without using float or positioning.
+To make the CSS flex method work, surround the <div> elements with another <div> element and give it the status as a flex container.
+ -->
+ <div class="mycontainer2">
+
+  <div style="background-color:#FFF4A3;">
+    <h2>London-2</h2>
+    <p>London is the capital city of England.</p>
+    <p>London has over 13 million inhabitants.</p>
+  </div>
+  
+  <div style="background-color:#FFC0C7;">
+    <h2>Oslo-2</h2>
+    <p>Oslo is the capital city of Norway.</p>
+    <p>Oslo has over 600.000 inhabitants.</p>
+  </div>
+  
+  <div style="background-color:#D9EEE1;">
+    <h2>Rome-2</h2>
+    <p>Rome is the capital city of Italy.</p>
+    <p>Rome has almost 3 million inhabitants.</p>
+  </div>
+
+</div>
+
+<br>
+<!-- 
+The CSS Grid Layout Module offers a grid-based layout system, with rows and columns, making it easier to design web pages without having to use floats and positioning.
+
+Sounds almost the same as flex, but has the ability to define more than one row and position each row individually.
+
+The CSS grid method requires that you surround the <div> elements with another <div> element and give the status as a grid container, 
+and you must specify the width of each column. 
+-->
+
+<div class="grid-container">
+
+  <div style="background-color:#FFF4A3;">
+    <h2>London-3</h2>
+    <p>London is the capital city of England.</p>
+    <p>London has over 13 million inhabitants.</p>
+  </div>
+  
+  <div style="background-color:#FFC0C7;">
+    <h2>Oslo-3</h2>
+    <p>Oslo is the capital city of Norway.</p>
+    <p>Oslo has over 600.000 inhabitants.</p>
+  </div>
+  
+  <div style="background-color:#D9EEE1;">
+    <h2>Rome-3</h2>
+    <p>Rome is the capital city of Italy.</p>
+    <p>Rome has almost 3 million inhabitants.</p>
+  </div>
+  
+  </div>
+
+
+
+
+<!-- 
+The <span> element is an inline container used to mark up a part of a text, or a part of a document.
+The <span> element has no required attributes, but style, class and id are common.
+When used together with CSS, the <span> element can be used to style parts of the text:
+ -->
+ <p>My mother has <span style="color:blue;font-weight:bold;">blue</span> eyes and my father has <span style="color:darkolivegreen;font-weight:bold;">dark green</span> eyes.</p>
 
 <br>
 <a href="../index.html">home</a>
