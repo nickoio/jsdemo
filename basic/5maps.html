@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Maps</title>
+    <style>
+        body {
+            font-size: 30px
+        }
+    </style>
+</head>
+
+<body>
+
+    <script>
+
+        document.body.innerHTML = '';
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        document.body.innerHTML += 'Map' + "<br><br>"
+
+        let map = new Map();
+
+        map.set("1", "str1");    // строка в качестве ключа
+        map.set(1, "num1");      // цифра как ключ
+        map.set(true, "bool1");  // булево значение как ключ
+
+        // помните, обычный объект Object приводит ключи к строкам?
+        // Map сохраняет тип ключей, так что в этом случае сохранится 2 разных значения:
+        console.log(map.get(1)); // "num1"
+        console.log(map.get("1")); // "str1"
+
+        console.log(map.size); // 3
+
+
+        // массив пар [ключ, значение]
+        map = new Map([
+            ['1', 'str1'],
+            [1, 'num1'],
+            [true, 'bool1']
+        ]);
+
+        console.log(map.get('1')); // str1
+
+
+        // Если у нас уже есть обычный объект, и мы хотели бы создать Map из него, то поможет встроенный метод Object.entries(obj)
+        let obj = {
+            name: "John",
+            age: 30
+        };
+
+        map = new Map(Object.entries(obj));
+        console.log(map.get('name')); // John
+
+
+        // Есть метод Object.fromEntries, который делает противоположное: получив массив пар вида [ключ, значение], он создаёт из них объект:
+        let prices = Object.fromEntries([
+            ['banana', 1],
+            ['orange', 2],
+            ['meat', 4]
+        ]);
+
+        // prices = { banana: 1, orange: 2, meat: 4 }
+        console.log(prices.orange); // 2
+
+
+        obj = Object.fromEntries(map.entries()); // создаём обычный объект (*)
+        obj = Object.fromEntries(map); // убрать .entries()
+
+
+        // Map может использовать объекты в качестве ключей.
+        let john = { name: "John" };
+
+        // давайте сохраним количество посещений для каждого пользователя
+        let visitsCountMap = new Map();
+
+        // объект john - это ключ для значения в объекте Map
+        visitsCountMap.set(john, 123);
+
+        console.log(visitsCountMap.get(john)); // 123
+
+
+        // Каждый вызов map.set возвращает объект map, так что мы можем объединить вызовы в цепочку:
+        map.set("1", "str1")
+            .set(1, "num1")
+            .set(true, "bool1");
+
+        console.log("=================");
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        document.body.innerHTML += 'Перебор Map' + "<br><br>"
+
+        let recipeMap = new Map([
+            ["огурец", 500],
+            ["помидор", 350],
+            ["лук", 50]
+        ]);
+
+        // перебор по ключам (овощи)
+        for (let vegetable of recipeMap.keys()) {
+            console.log(vegetable); // огурец, помидор, лук
+        }
+
+        // перебор по значениям (числа)
+        for (let amount of recipeMap.values()) {
+            console.log(amount); // 500, 350, 50
+        }
+
+        // перебор по элементам в формате [ключ, значение]
+        for (let entry of recipeMap) { // то же самое, что и recipeMap.entries()
+            console.log(entry); // огурец,500 (и так далее)
+        }
+
+        // выполняем функцию для каждой пары (ключ, значение)
+        recipeMap.forEach((value, key, map) => {
+            console.log(`${key}: ${value}`); // огурец: 500 и так далее
+        });
+
+        console.log("=================");
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        document.body.innerHTML += 'Set' + "<br><br>"
+
+
+        let set = new Set();
+
+        john = { name: "John" };
+        let pete = { name: "Pete" };
+        let mary = { name: "Mary" };
+
+        // считаем гостей, некоторые приходят несколько раз
+        set.add(john);
+        set.add(pete);
+        set.add(mary);
+        set.add(john);
+        set.add(mary);
+
+        // set хранит только 3 уникальных значения
+        console.log(set.size); // 3
+
+        for (let user of set) {
+            console.log(user.name); // John (потом Pete и Mary)
+        }
+
+
+        set = new Set(["апельсин", "яблоко", "банан"]);
+
+        for (let value of set) console.log(value);
+
+        // то же самое с forEach:
+        set.forEach((value, valueAgain, set) => {  // значение появляется в списке аргументов дважды
+            console.log(value);
+        });
+
+        // Set имеет те же встроенные методы, что и Map:
+        // set.keys() – возвращает перебираемый объект для значений,
+        // set.values() – то же самое, что и set.keys(), присутствует для обратной совместимости с Map,
+        // set.entries() – возвращает перебираемый объект для пар вида [значение, значение], присутствует для обратной совместимости с Map.
+
+        console.log("=================");
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        document.body.innerHTML += 'WeakMap' + "<br><br>"
+
+        // Первое его отличие от Map в том, что ключи в WeakMap должны быть объектами, а не примитивными значениями:
+        // WeakMap не поддерживает перебор и методы keys(), values(), entries()
+        let weakMap = new WeakMap();
+
+        obj = {};
+
+        weakMap.set(obj, "ok"); // работает (объект в качестве ключа)
+
+        // нельзя использовать строку в качестве ключа
+        // weakMap.set("test", "Whoops"); // Ошибка, потому что "test" не объект
+
+
+
+        john = { name: "John" };
+
+        weakMap = new WeakMap();
+        weakMap.set(john, "...");
+
+        john = null; // перезаписываем ссылку на объект
+        // объект john удалён из памяти!
+
+
+
+        // weakMap.set(john, "секретные документы");
+        // если john умрёт, "секретные документы" будут автоматически уничтожены
+
+        console.log("=================");
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        document.body.innerHTML += 'WeakSet' + "<br><br>"
+
+        let visitedSet = new WeakSet();
+
+        john = { name: "John" };
+        pete = { name: "Pete" };
+        mary = { name: "Mary" };
+
+        visitedSet.add(john); // John заходил к нам
+        visitedSet.add(pete); // потом Pete
+        visitedSet.add(john); // John снова
+
+        // visitedSet сейчас содержит двух пользователей
+
+        // проверим, заходил ли John?
+        console.log(visitedSet.has(john)); // true
+
+        // проверим, заходила ли Mary?
+        console.log(visitedSet.has(mary)); // false
+
+        john = null;
+
+        // структура данных visitedSet будет очищена автоматически (объект john будет удалён из visitedSet)
+
+        console.log("=================");
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+
+    </script>
+
+    <br>
+    <a href="../index.html">home</a>
+
+</body>
+
+</html>
