@@ -161,7 +161,46 @@
 
         ////////////////////////////////////////////////////////////////////////////////////
 
+        document.body.innerHTML += 'Глобальный объект' + "<br><br>"
 
+        // let func = new Function([arg1, arg2, ...argN], functionBody);
+        // let sayHi = new Function('alert("Hello")');
+        let sum1 = new Function('a', 'b', 'return a + b');
+        console.log(sum1(1, 2)); // 3
+
+        // В браузере глобальные функции и переменные, объявленные с помощью var (не let/const!), становятся свойствами глобального объекта:
+        // То же самое касается функций, объявленных с помощью синтаксиса Function Declaration
+        // Такое поведение поддерживается для совместимости. В современных проектах, использующих JavaScript-модули, такого не происходит.
+
+        var a = 5; // объявление var создаёт свойство window.a
+        console.log(window.a); // 5
+
+        window.a = 5; // в Node.js — global.a 
+        console.log(a); // 5 // a = window.a
+        // Недавно globalThis был добавлен в язык как стандартизированное имя для глобального объекта, которое должно поддерживаться в любом окружении
+
+        // При создании функции с использованием new Function, её свойство [[Scope]]
+        // ссылается не на текущий LexicalEnvironment, а на window
+
+        var a2 = 1;
+        function getFunc() {
+            var a2 = 2;
+
+            var func = new Function('', 'console.log(a2)');
+
+            return func;
+        }
+        getFunc()(); // 1, из window  
+
+        var a3 = 1;
+        function getFunc2() {
+            var a3 = 2;
+
+            var func = function () { console.log(a3); };
+
+            return func;
+        }
+        getFunc2()(); // 2, из LexicalEnvironment функции getFunc
 
 
 
@@ -169,7 +208,129 @@
 
         ////////////////////////////////////////////////////////////////////////////////////
 
+        document.body.innerHTML += 'Объект функции, NFE(Named Function Expression)' + "<br><br>"
 
+
+        function sayHi1() {
+            console.log("Hi");
+            // давайте посчитаем, сколько вызовов мы сделали
+            sayHi1.counter++;
+        }
+        sayHi1.counter = 0; // начальное значение
+        console.log(sayHi1.name); // sayHi1
+
+        sayHi1(); // Hi
+        sayHi1(); // Hi
+        console.log(`Вызвана ${sayHi1.counter} раза`); // Вызвана 2 раза
+        // Свойство функции, назначенное как sayHi1.counter = 0, не объявляет локальную переменную counter внутри неё. 
+        // Другими словами, свойство counter и переменная let counter – это две независимые вещи.
+
+
+        let sayHi2 = function () {
+            console.log("Hi");
+        };
+        console.log(sayHi2.name); // sayHi2 (есть имя!)
+
+
+
+        let user = {
+            sayHi() {
+                // ...
+            },
+
+            sayBye: function () {
+                // ...
+            }
+        }
+        console.log(user.sayHi.name); // sayHi
+        console.log(user.sayBye.name); // sayBye
+
+
+        // функция объявлена внутри массива
+        arr = [function () { }];
+        console.log(arr[0].name); // <пустая строка>
+        // здесь отсутствует возможность определить имя, поэтому его нет
+
+
+        function f1(a) { }
+        function f2(a, b) { }
+        function many(a, b, ...more) { }
+
+        console.log(f1.length); // 1
+        console.log(f2.length); // 2
+        console.log(many.length); // 2
+
+
+        ////////// NFE
+
+        let sayHi3 = function func(who) {
+            if (who) {
+                console.log(`Hello, ${who}`);
+            } else {
+                func("Guest"); // использует func, чтобы снова вызвать себя же // if call sayHi3("Guest") - значение sayHi3 может быть изменено;
+            }
+        };
+
+        // Есть две важные особенности имени func, ради которого оно даётся:
+        // 1. Оно позволяет функции ссылаться на себя же.
+        // 2. Оно не доступно за пределами функции.
+
+
+        console.log("=================");
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        document.body.innerHTML += 'Планирование: setTimeout и setInterval' + "<br><br>"
+
+        // let timerId = setTimeout(func|code, [delay], [arg1], [arg2], ...);
+        // Например, данный код вызывает sayHi4() спустя одну секунду:
+        function sayHi4(phrase, who) {
+            console.log(phrase + ', ' + who);
+        }
+        let timerId = setTimeout(sayHi4, 1000, "Привет", "Джон");
+        // let timerId = setTimeout(() => alert('Привет'), 1000);
+
+        // clearTimeout(timerId);  // Отмена через clearTimeout
+
+
+
+        // Метод setInterval имеет такой же синтаксис как setTimeout:
+        // let timerId = setInterval(func|code, [delay], [arg1], [arg2], ...);
+        // отличие этого метода от setTimeout в том, что функция запускается не один раз, а периодически через указанный интервал времени.
+
+        // повторить с интервалом 2 секунды
+        let timerId2 = setInterval(() => console.log('tick'), 2000);
+
+        // остановить вывод через 7 секунд
+        setTimeout(() => { clearInterval(timerId2); console.log('stop'); }, 7000);
+
+        console.log("=================");
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        document.body.innerHTML += 'Вложенный setTimeout' + "<br><br>"
+
+        // Есть два способа запускать что-то регулярно.
+        // Один из них setInterval. Другим является вложенный setTimeout. Например:
+
+        /** вместо:
+            let timerId = setInterval(() => alert('tick'), 2000);
+        */
+
+        let timerId3 = setTimeout(function tick() {
+            console.log('tick2');
+            timerId3 = setTimeout(console.log, 2000); // (*)
+        }, 2000);
+
+
+        console.log("=================");
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+
+        console.log("=================");
+
+        ////////////////////////////////////////////////////////////////////////////////////
 
 
         console.log("=================");

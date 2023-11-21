@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html>
+
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
 </head>
+
 <body>
-<script>
+    <script>
 
         ////////////////////////////////////////////////////////////////////////////////////
 
@@ -34,103 +36,105 @@
 
         ////////////////////////////////////////////////////////////////////////////////////
 
-    var a = 5; // объявление var создаёт свойство window.a
-    console.log( window.a ); // 5
-
-    window.a = 5;
-    console.log( a ); // 5
-// При создании функции с использованием new Function, её свойство [[Scope]]
-    // ссылается не на текущий LexicalEnvironment, а на window
-    var a = 1;
-    function getFunc() {
-        var a = 2;
-
-        var func = new Function('', 'console.log(a)');
-
-        return func;
-    }
-    getFunc()(); // 1, из window
-
-    var a = 1;
-    function getFunc() {
-        var a = 2;
-
-        var func = function() { console.log(a); };
-
-        return func;
-    }
-    getFunc()(); // 2, из LexicalEnvironment функции getFunc
 
 
-    //////////////////////
-    function makeCounter1() {
-        var currentCount = 1;
 
-        return { // возвратим объект вместо функции
-            getNext: function() {
-                return currentCount++;
-            },
 
-            set: function(value) {
-                currentCount = value;
-            },
 
-            reset: function() {
-                currentCount = 1;
-            }
-        };
-    }
+        //////////////////////
+        function makeCounter1() {
+            var currentCount = 1;
 
-    var counter1 = makeCounter1();
+            return { // возвратим объект вместо функции
+                getNext: function () {
+                    return currentCount++;
+                },
 
-    console.log( counter1.getNext() ); // 1
-    console.log( counter1.getNext() ); // 2
+                set: function (value) {
+                    currentCount = value;
+                },
 
-    counter1.set(5);
-    console.log( counter1.getNext() ); // 5
-    ////////////////////////
-
-    function makeCounter2() {
-        var currentCount = 1;
-
-        // возвращаемся к функции
-        function counter() {
-            return currentCount++;
+                reset: function () {
+                    currentCount = 1;
+                }
+            };
         }
 
-        // ...и добавляем ей методы!
-        counter.set = function(value) {
-            currentCount = value;
-        };
+        var counter1 = makeCounter1();
 
-        counter.reset = function() {
-            currentCount = 1;
-        };
+        console.log(counter1.getNext()); // 1
+        console.log(counter1.getNext()); // 2
 
-        return counter;
-    }
+        counter1.set(5);
+        console.log(counter1.getNext()); // 5
+        ////////////////////////
 
-    var counter2 = makeCounter2();
+        function makeCounter2() {
+            var currentCount = 1;
 
-    console.log( counter2() ); // 1
-    console.log( counter2() ); // 2
+            // возвращаемся к функции
+            function counter() {
+                return currentCount++;
+            }
 
-    counter2.set(5);
-    console.log( counter2() ); // 5
-    ////////////////////////
+            // ...и добавляем ей методы!
+            counter.set = function (value) {
+                currentCount = value;
+            };
 
-    +function() {
-        console.log('Вызов на месте');
-    }();
+            counter.reset = function () {
+                currentCount = 1;
+            };
 
-    !function() {
-        console.log('Так тоже будет работать');
-    }();
+            return counter;
+        }
 
-</script>
+        var counter2 = makeCounter2();
 
-<br>
-<a href="../index.html">home</a>
+        console.log(counter2()); // 1
+        console.log(counter2()); // 2
+
+        counter2.set(5);
+        console.log(counter2()); // 5
+
+
+        // свойство counter 
+        function makeCounter3() {
+            // вместо
+            // let count = 0
+
+            function counter() {
+                return counter.count++;
+            };
+
+            counter.count = 0; // свойство counter и переменная let counter – это две независимые вещи
+
+            return counter;
+        }
+
+        let counter3 = makeCounter3();
+        console.log(counter3()); // 0
+        console.log(counter3()); // 1
+
+        // если значение count живёт во внешней переменной, то оно не доступно для внешнего кода. Изменить его могут только вложенные функции. 
+        // А если оно присвоено как свойство функции, то мы можем его получить:
+        counter.count = 10;
+        console.log(counter3()); // 10
+        ////////////////////////
+
+        +function () {
+            console.log('Вызов на месте');
+        }();
+
+        !function () {
+            console.log('Так тоже будет работать');
+        }();
+
+    </script>
+
+    <br>
+    <a href="../index.html">home</a>
 
 </body>
+
 </html>
