@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script>
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+
+
+        function f() {
+            let value = Math.random();
+
+            return function () { return value; };
+        }
+        // 3 функции в массиве, каждая из которых ссылается на лексическое окружение
+        // из соответствующего вызова f()
+        let arr = [f(), f(), f()];
+        console.log(arr[0]()); // different value
+        console.log(arr[1]()); // different value
+        console.log(arr[2]()); // different value
+
+
+        let g = f(); // g.[[Environment]] хранит ссылку на лексическое окружение
+        // из соответствующего вызова f()
+        console.log(g()); // the same value
+        console.log(g()); // the same value
+        console.log(g()); // the same valueF
+
+        console.log("=================");
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+    var a = 5; // объявление var создаёт свойство window.a
+    console.log( window.a ); // 5
+
+    window.a = 5;
+    console.log( a ); // 5
+// При создании функции с использованием new Function, её свойство [[Scope]]
+    // ссылается не на текущий LexicalEnvironment, а на window
+    var a = 1;
+    function getFunc() {
+        var a = 2;
+
+        var func = new Function('', 'console.log(a)');
+
+        return func;
+    }
+    getFunc()(); // 1, из window
+
+    var a = 1;
+    function getFunc() {
+        var a = 2;
+
+        var func = function() { console.log(a); };
+
+        return func;
+    }
+    getFunc()(); // 2, из LexicalEnvironment функции getFunc
+
+
+    //////////////////////
+    function makeCounter1() {
+        var currentCount = 1;
+
+        return { // возвратим объект вместо функции
+            getNext: function() {
+                return currentCount++;
+            },
+
+            set: function(value) {
+                currentCount = value;
+            },
+
+            reset: function() {
+                currentCount = 1;
+            }
+        };
+    }
+
+    var counter1 = makeCounter1();
+
+    console.log( counter1.getNext() ); // 1
+    console.log( counter1.getNext() ); // 2
+
+    counter1.set(5);
+    console.log( counter1.getNext() ); // 5
+    ////////////////////////
+
+    function makeCounter2() {
+        var currentCount = 1;
+
+        // возвращаемся к функции
+        function counter() {
+            return currentCount++;
+        }
+
+        // ...и добавляем ей методы!
+        counter.set = function(value) {
+            currentCount = value;
+        };
+
+        counter.reset = function() {
+            currentCount = 1;
+        };
+
+        return counter;
+    }
+
+    var counter2 = makeCounter2();
+
+    console.log( counter2() ); // 1
+    console.log( counter2() ); // 2
+
+    counter2.set(5);
+    console.log( counter2() ); // 5
+    ////////////////////////
+
+    +function() {
+        console.log('Вызов на месте');
+    }();
+
+    !function() {
+        console.log('Так тоже будет работать');
+    }();
+
+</script>
+
+<br>
+<a href="../index.html">home</a>
+
+</body>
+</html>

@@ -225,6 +225,299 @@
 
         ////////////////////////////////////////////////////////////////////////////////////
 
+        document.body.innerHTML += 'Object.keys, values, entries' + "<br><br>"
+
+        // методы keys(), values(), entries() поддерживаются для структур: Map, Set, Array
+        // Простые объекты также можно перебирать похожими методами, но синтаксис немного отличается.
+        // Для простых объектов доступны следующие методы:
+        // Object.keys(obj) – возвращает массив ключей.
+        // Object.values(obj) – возвращает массив значений.
+        // Object.entries(obj) – возвращает массив пар [ключ, значение]
+
+        // map.keys() возвращает перебираемый объект
+        // Object.keys(obj) возвращает «реальный» массив
+
+        let user = {
+            name: "John",
+            age: 30
+        };
+
+        // Object.keys(user) = ["name", "age"]
+        // Object.values(user) = ["John", 30]
+        // Object.entries(user) = [["name", "John"], ["age", 30]]
+
+
+        // Object.entries, Object.fromEntries:
+        prices = {
+            banana: 1,
+            orange: 2,
+            meat: 4,
+        };
+
+        let doublePrices = Object.fromEntries(
+            // преобразовать в массив, затем map, затем fromEntries обратно объект
+            Object.entries(prices).map(([key, value]) => [key, value * 2])
+        );
+
+        console.log(doublePrices.meat); // 8
+
+        console.log("=================");
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        document.body.innerHTML += 'Деструктуризация массива' + "<br><br>"
+
+        // у нас есть массив с именем и фамилией
+        let arr = ["Ilya", "Kantor"];
+
+        // деструктурирующее присваивание
+        // записывает firstName = arr[0]
+        // и surname = arr[1]
+        let [firstName, surname] = arr;
+
+        console.log(firstName); // Ilya
+        console.log(surname);  // Kantor
+
+        // Отлично смотрится в сочетании со split или другими методами, возвращающими массив:
+        [firstName, surname] = "Ilya Kantor".split(' ');
+        console.log(firstName); // Ilya
+        console.log(surname);  // Kantor
+
+
+        // второй элемент не нужен
+        [firstName, , title] = ["Julius", "Caesar", "Consul", "of the Roman Republic"];
+        console.log(title); // Consul
+
+        // На самом деле мы можем использовать любой перебираемый объект, не только массивы:
+        let [a, b, c] = "abc";
+        let [one, two, three] = new Set([1, 2, 3]);
+
+
+        // Цикл с .entries()
+        user = {
+            name: "John",
+            age: 30
+        };
+
+        // цикл по ключам и значениям
+        for (let [key, value] of Object.entries(user)) {
+            console.log(`${key}:${value}`); // name:John, затем age:30
+        }
+
+
+        // то же самое для map:
+        user = new Map();
+        user.set("name", "John");
+        user.set("age", "30");
+
+        // Map перебирает как пары [ключ, значение], что очень удобно для деструктурирования
+        for (let [key, value] of user) {
+            console.log(`${key}:${value}`); // name:John, затем age:30
+        }
+
+        // Трюк обмена переменных
+        let guest = "Jane";
+        let admin = "Pete";
+
+        // Давайте поменяем местами значения: сделаем guest = "Pete", а admin = "Jane"
+        [guest, admin] = [admin, guest];
+        console.log(`${guest} ${admin}`); // Pete Jane (успешно заменено!)
+
+        // значения по умолчанию
+        [firstName, surname] = [];
+        console.log(firstName); // undefined
+        console.log(surname); // undefined
+
+
+        [name = "Guest", surname = "Anonymous"] = ["Julius"];
+        console.log(name);    // Julius (из массива)
+        console.log(surname); // Anonymous (значение по умолчанию)
+
+        console.log("=================");
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        document.body.innerHTML += 'Деструктуризация объекта' + "<br><br>"
+
+        let options = {
+            title: "Menu",
+            width: 100,
+            height: 200
+        };
+
+        ({ title, width, height } = options); // here parenthesis because title was defined before
+
+        console.log(title);  // Menu
+        console.log(width);  // 100
+        console.log(height); // 200
+
+        // Порядок не имеет значения. Вот так – тоже работает:
+        // изменён порядок в let {...}
+        ({ height, width, title } = { title: "Menu", height: 200, width: 100 })
+        console.log(title);  // Menu
+        console.log(width);  // 100
+        console.log(height); // 200
+
+
+        // Если мы хотим присвоить свойство объекта переменной с другим названием, например, 
+        // свойство options.width присвоить переменной w, то мы можем использовать двоеточие:
+
+        options = {
+            title: "Menu",
+            width: 100,
+            height: 200
+        };
+
+        // { sourceProperty: targetVariable }
+        ({ width: w, height: h, title } = options);
+
+        // width -> w
+        // height -> h
+        // title -> title
+
+        console.log(title);  // Menu
+        console.log(w);      // 100
+        console.log(h);      // 200
+
+
+        console.log("=================");
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        document.body.innerHTML += 'Date' + "<br><br>"
+
+        let now = new Date(); // = Date.now(), однако метод не создаёт промежуточный объект Date
+        let Jan02_1970 = new Date(24 * 3600 * 1000);
+        let Dec31_1969 = new Date(-24 * 3600 * 1000);
+        let date = new Date("2017-01-26");
+        date = new Date(2011, 0, 1, 0, 0, 0, 0); // 1 Jan 2011, 00:00:00 // Обязательны только первые два аргумента
+
+        date.getFullYear();
+        date.getMonth();
+        date.getDate();
+
+        date.getUTCFullYear();
+        date.getUTCMonth();
+        date.getUTCDate();
+
+        // существуют два особых метода без UTC-варианта:
+        date.getTime(); // возвращает таймстамп
+        date.getTimezoneOffset(); // Возвращает разницу в минутах между UTC и местным часовым поясом
+
+
+
+        let today = new Date();
+        today.setHours(0);
+        console.log(today); // выводится сегодняшняя дата, но значение часа будет 0
+        today.setHours(0, 0, 0, 0);
+        console.log(today); // всё ещё выводится сегодняшняя дата, но время будет ровно 00:00:00.
+
+
+        (+date); // количество миллисекунд, то же самое, что date.getTime()
+
+
+        // Метод Date.parse(str) - Формат строки должен быть следующим: YYYY-MM-DDTHH:mm:ss.sssZ
+        // Необязательная часть 'Z' обозначает часовой пояс в формате +-hh:mm. Если указать просто букву Z, то получим UTC+0.
+        let ms = Date.parse('2012-01-26T13:51:50.417-07:00');
+
+
+        console.log("=================");
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        document.body.innerHTML += 'JSON' + "<br><br>"
+
+        let student = {
+            name: 'John',
+            age: 30,
+            isAdmin: false,
+            courses: ['html', 'css', 'js'],
+            wife: null
+        };
+
+        let json = JSON.stringify(student);
+
+        console.log(typeof json); // string
+
+        console.log(json);
+        /* выведет объект в формате JSON:
+        {
+          "name": "John",
+          "age": 30,
+          "isAdmin": false,
+          "courses": ["html", "css", "js"],
+          "wife": null
+        }
+        */
+
+
+        // число в JSON остаётся числом
+        console.log(JSON.stringify(1)) // 1
+        // строка в JSON по-прежнему остаётся строкой, но в двойных кавычках
+        console.log(JSON.stringify('test')) // "test"
+        console.log(JSON.stringify(true)); // true
+        console.log(JSON.stringify([1, 2, 3])); // [1,2,3]
+
+
+        // JSON является независимой от языка спецификацией для данных, 
+        // поэтому JSON.stringify пропускает некоторые специфические свойства объектов JavaScript. А именно:
+        // Свойства-функции (методы).
+        // Символьные ключи и значения.
+        // Свойства, содержащие undefined
+
+
+        user = {
+            sayHi() { // будет пропущено
+                alert("Hello");
+            },
+            [Symbol("id")]: 123, // также будет пропущено
+            something: undefined // как и это - пропущено
+        };
+        console.log(JSON.stringify(user)); // {} (пустой объект)
+
+
+        // Полный синтаксис JSON.stringify: let json = JSON.stringify(value, [replacer, space])
+        let room = {
+            number: 23
+        };
+        let meetup = {
+            date: new Date(Date.UTC(2017, 0, 1)),
+            room
+        };
+        console.log(JSON.stringify(meetup)); //  {"date":"2017-01-01T00:00:00.000Z","room":{"number":23}}
+
+        // Пользовательский «toJSON»
+        room = {
+            number: 23,
+            toJSON() {
+                return this.number;
+            }
+        };
+        meetup = {
+            date: new Date(Date.UTC(2017, 0, 1)),
+            room
+        };
+        console.log(JSON.stringify(meetup)); //  {"date":"2017-01-01T00:00:00.000Z","room":23}
+
+
+        // JSON.parse
+        // let value = JSON.parse(str, [reviver]);
+
+        // строковый массив
+        let numbers = "[0, 1, 2, 3]";
+        numbers = JSON.parse(numbers);
+        console.log(numbers[1]); // 1
+
+
+        let str = '{"title":"Conference","date":"2017-11-30T12:00:00.000Z"}';
+        meetup = JSON.parse(str, function (key, value) {
+            if (key == 'date') return new Date(value);
+            return value;
+        });
+        console.log(meetup.date.getDate()); // 30 
+
+
+        console.log("=================");
 
         ////////////////////////////////////////////////////////////////////////////////////
 
