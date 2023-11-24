@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Load Script</title>
+    <style>
+        body {
+            font-size: 30px
+        }
+    </style>
+</head>
+
+<body>
+
+    <script>
+        
+        document.body.innerHTML = '';
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        document.body.innerHTML += 'Load script with callback and catch error' + "<br><br>"
+
+        let message1 = "my message1";
+
+        function loadScript(src, callback) {
+            let script = document.createElement('script');
+            script.src = src;
+
+            script.onload = () => callback(null, script);
+            script.onerror = () => callback(new Error(`Не удалось загрузить скрипт ${src}`));
+
+            document.head.append(script);
+        }
+
+
+        loadScript('loadedScript.js', function (error, script) {
+            if (error) {
+                console.log("обрабатываем ошибку"); // обрабатываем ошибку
+            } else {
+                console.log("скрипт успешно загружен"); // скрипт успешно загружен
+            }
+        });
+
+
+
+
+        ///////////////////////////////////
+        // пирамида вызовов
+
+        // loadScript('1.js', function (error, script) {
+
+        //     if (error) {
+        //         handleError(error);
+        //     } else {
+        //         // ...
+        //         loadScript('2.js', function (error, script) {
+        //             if (error) {
+        //                 handleError(error);
+        //             } else {
+        //                 // ...
+        //                 loadScript('3.js', function (error, script) {
+        //                     if (error) {
+        //                         handleError(error);
+        //                     } else {
+        //                         // ...и так далее, пока все скрипты не будут загружены (*)
+        //                     }
+        //                 });
+
+        //             }
+        //         })
+        //     }
+        // });
+
+
+        ///////////////////////////////////
+        // Мы можем попытаться решить эту проблему, изолируя каждое действие в отдельную функцию
+
+        // loadScript('1.js', step1);
+
+        // function step1(error, script) {
+        //     if (error) {
+        //         handleError(error);
+        //     } else {
+        //         // ...
+        //         loadScript('2.js', step2);
+        //     }
+        // }
+
+        // function step2(error, script) {
+        //     if (error) {
+        //         handleError(error);
+        //     } else {
+        //         // ...
+        //         loadScript('3.js', step3);
+        //     }
+        // }
+
+        // function step3(error, script) {
+        //     if (error) {
+        //         handleError(error);
+        //     } else {
+        //         // ...и так далее, пока все скрипты не будут загружены (*)
+        //     }
+        // };
+
+
+        console.log("=================");
+        
+        ////////////////////////////////////////////////////////////////////////////////////
+
+    </script>
+
+    <br>
+    <a href="../../index.html">home</a>
+
+</body>
+
+</html>

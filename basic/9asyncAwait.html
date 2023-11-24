@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Async/await</title>
+    <style>
+        body {
+            font-size: 30px
+        }
+    </style>
+</head>
+
+<body>
+
+    <script>
+
+        document.body.innerHTML = '';
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        document.body.innerHTML += 'async' + "<br><br>"
+
+        // У слова async один простой смысл: эта функция всегда возвращает промис
+        async function f1() {
+            return 1;
+        }
+        f1().then(console.log); // 1
+
+
+        // Можно и явно вернуть промис, результат будет одинаковым:
+        async function f2() {
+            return Promise.resolve(1);
+        }
+        f2().then(console.log); // 1
+
+        console.log("=================");
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        document.body.innerHTML += 'await' + "<br><br>"
+
+        // Ключевое слово await заставит интерпретатор JavaScript ждать до тех пор, пока промис справа от await не выполнится
+        // хотя await и заставляет JavaScript дожидаться выполнения промиса, это не отнимает ресурсов процессора
+        // Пока промис не выполнится, JS-движок может заниматься другими задачами
+        // По сути, это просто «синтаксический сахар» для получения результата промиса, более наглядный, чем promise.then
+        // await нельзя использовать в обычных функциях
+
+        async function f3() {
+
+            let promise = new Promise((resolve, reject) => {
+                setTimeout(() => resolve("готово!"), 1000)
+            });
+
+            let result = await promise; // будет ждать, пока промис не выполнится (*)
+
+            console.log(result); // "готово!"
+        }
+
+        f3();
+
+
+        console.log("=================");
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        document.body.innerHTML += 'TODO: пример showAvatar' + "<br><br>"
+
+        // //  перепишем пример showAvatar() из раздела Цепочка промисов(Более сложный пример: fetch) с помощью async/await
+
+        // async function showAvatar() {
+
+        //     // запрашиваем JSON с данными пользователя
+        //     let response = await fetch('/article/promise-chaining/user.json');
+        //     let user = await response.json();
+
+        //     // запрашиваем информацию об этом пользователе из github
+        //     let githubResponse = await fetch(`https://api.github.com/users/${user.name}`);
+        //     let githubUser = await githubResponse.json();
+
+        //     // отображаем аватар пользователя
+        //     let img = document.createElement('img');
+        //     img.src = githubUser.avatar_url;
+        //     img.className = "promise-avatar-example";
+        //     document.body.append(img);
+
+        //     // ждём 3 секунды и затем скрываем аватар
+        //     await new Promise((resolve, reject) => setTimeout(resolve, 3000));
+
+        //     img.remove();
+
+        //     return githubUser;
+        // }
+
+        // showAvatar();
+
+
+        console.log("=================");
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        document.body.innerHTML += 'TODO: await на верхнем уровне' + "<br><br>"
+
+        // // await нельзя использовать на верхнем уровне вложенности
+        // // так сделать не получится:
+        // // SyntaxError на верхнем уровне вложенности
+
+        // // let response = await fetch('/article/promise-chaining/user.json');
+        // // let user = await response.json();
+
+        // // Можно обернуть этот код в анонимную async–функцию, тогда всё заработает:
+        // (async () => {
+        //     let response = await fetch('/article/promise-chaining/user.json');
+        //     let user = await response.json();
+        //     console.log("bla-bla");
+        // })();
+
+        console.log("=================");
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        document.body.innerHTML += 'промис объекты' + "<br><br>"
+
+        // Как и promise.then, await позволяет работать с промис–совместимыми объектами
+
+        class Thenable {
+            constructor(num) {
+                this.num = num;
+            }
+            then(resolve, reject) {
+                console.log(resolve);
+                // выполнить resolve со значением this.num * 2 через 1000мс
+                setTimeout(() => resolve(this.num * 2), 1000); // (*)
+            }
+        };
+
+        async function f4() {
+            // код будет ждать 1 секунду,
+            // после чего значение result станет равным 2
+            let result = await new Thenable(1);
+            console.log(result);
+        }
+        f4();
+
+        // Асинхронные методы классов
+        // Как и в случае с асинхронными функциями, такой метод гарантированно возвращает промис, и в его теле можно использовать await
+
+        class Waiter {
+            async wait() {
+                return await Promise.resolve(1);
+            }
+        }
+
+        new Waiter()
+            .wait()
+            .then(console.log); // 1
+
+
+        console.log("=================");
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        document.body.innerHTML += 'TODO: Обработка ошибок' + "<br><br>"
+
+
+        console.log("=================");
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+    </script>
+
+    <br>
+    <a href="../index.html">home</a>
+
+</body>
+
+</html>

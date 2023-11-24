@@ -3,15 +3,22 @@
 
 <head lang="en">
     <meta charset="UTF-8">
-    <title></title>
+    <title>Closures</title>
+    <style>
+        body {
+            font-size: 30px
+        }
+    </style>
 </head>
 
 <body>
     <script>
 
+        document.body.innerHTML = '';
+
         ////////////////////////////////////////////////////////////////////////////////////
 
-
+        document.body.innerHTML += 'Closures' + "<br><br>"
 
         function f() {
             let value = Math.random();
@@ -118,7 +125,7 @@
 
         // если значение count живёт во внешней переменной, то оно не доступно для внешнего кода. Изменить его могут только вложенные функции. 
         // А если оно присвоено как свойство функции, то мы можем его получить:
-        counter.count = 10;
+        counter3.count = 10;
         console.log(counter3()); // 10
         ////////////////////////
 
@@ -129,6 +136,10 @@
         !function () {
             console.log('Так тоже будет работать');
         }();
+
+        console.log("=================");
+
+        ////////////////////////////////////////////////////////////////////////////////////
 
     </script>
 

@@ -16,7 +16,9 @@
 </head>
 
 <body>
-
+    <!-- Польза отдельных файлов в том, что браузер загрузит скрипт отдельно и сможет хранить его в кеше. 
+Если атрибут src установлен, содержимое тега script будет игнорироваться.
+В одном теге <script> нельзя использовать одновременно атрибут src и код внутри -->
     <script>
         document.body.innerHTML = '';
         // debugger; // <-- отладчик остановится тут
@@ -284,6 +286,120 @@
             default:
             //break
         }
+        console.log("=================");
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        document.body.innerHTML += 'Обработка ошибок' + "<br><br>"
+
+        try {
+            lalala; // ошибка, переменная не определена!
+        } catch (err) {
+            console.log(err.name); // ReferenceError
+            console.log(err.message); // lalala is not defined
+            console.log(err.stack); // ReferenceError: lalala is not defined at (...стек вызовов)
+
+            // Можем также просто вывести ошибку целиком
+            // Ошибка приводится к строке вида "name: message"
+            console.log(err); // ReferenceError: lalala is not defined
+        }
+
+
+        // Блок «catch» без переменной
+        // Эта возможность была добавлена в язык недавно. В старых браузерах может понадобиться полифил
+        // Если нам не нужны детали ошибки, в catch можно её пропустить  catch { //  <-- без (err)
+
+
+        // throw
+        // let error = new Error(message);
+        // let error = new SyntaxError(message);
+        // let error = new ReferenceError(message);
+
+
+        let myError = new SyntaxError("Ого, ошибка! o_O");
+        console.log(myError.name); // SyntaxError
+        console.log(myError.message); // Ого, ошибка! o_O
+
+        try {
+            throw new SyntaxError("Данные неполны: нет имени"); // (*)
+        } catch (e) {
+            console.log("Thrown Error: " + e.message); // JSON Error: Данные неполны: нет имени
+        } finally {
+            console.log('finally');
+        }
+
+
+        // проброс исключения, catch обрабатывает только SyntaxError
+        try {
+            // blabla(); // неожиданная ошибка
+            throw new SyntaxError("Данные неполны: нет имени");
+        } catch (e) {
+            if (e.name == "SyntaxError") {
+                console.log("Thrown Error: " + e.message); // JSON Error: Данные неполны: нет имени
+            } else {
+                throw e; // проброс (*)
+            }
+        }
+
+        // Глобальный catch. Информация из данной секции не является частью языка JavaScript!!!.
+        // в Node.js для этого есть process.on("uncaughtException"). 
+        // А в браузере мы можем присвоить функцию специальному свойству window.onerror, которая будет вызвана в случае необработанной ошибки
+        window.onerror = function (message, url, line, col, error) {
+            console.log(`${message}\n В ${line}:${col} на ${url}`);
+        };
+
+
+        // Пользовательские ошибки, расширение Error
+        class ValidationError extends Error {
+            constructor(message) {
+                super(message); // (1)
+                this.name = "ValidationError"; // (2)
+            }
+        }
+
+        class PropertyRequiredError extends ValidationError {
+            constructor(property) {
+                super("Нет свойства: " + property);
+                this.name = "PropertyRequiredError";
+                this.property = property;
+            }
+        }
+
+        function readUser(json) {
+            let user = JSON.parse(json);
+
+            if (!user.age) {
+                throw new ValidationError("Нет поля: age");
+            }
+            if (!user.name) {
+                throw new PropertyRequiredError("Нет поля: name");
+            }
+
+            return user;
+        }
+
+        try {
+            let user = readUser('{ "age": 25 }');
+        } catch (err) {
+            if (err instanceof ValidationError) {
+                console.log("Некорректные данные: " + err.message); // Некорректные данные: Нет поля: name
+            } else if (err instanceof PropertyRequiredError) {   
+                console.log("JSON Ошибка Синтаксиса: " + err.message);
+            } else if (err instanceof SyntaxError) {   // = else if (err.name == "SyntaxError")
+                console.log("JSON Ошибка Синтаксиса: " + err.message);
+            } else {
+                throw err; // неизвестная ошибка, пробросить исключение (**)
+            }
+        }
+
+        console.log("=================");
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        document.body.innerHTML += 'TODO: собственный «базовый» класс ошибки' + "<br><br>"
+        document.body.innerHTML += 'TODO: Обёртывание исключений' + "<br><br>"
+
+        console.log("=================");
 
         ////////////////////////////////////////////////////////////////////////////////////
 

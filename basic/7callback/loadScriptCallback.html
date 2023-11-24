@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Load Script</title>
+    <style>
+        body {
+            font-size: 30px
+        }
+    </style>
+</head>
+
+<body>
+
+    <script>
+        document.body.innerHTML = '';
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        document.body.innerHTML += 'Load script with callback' + "<br><br>"
+
+        let message1 = "my message1";
+
+
+        function loadScriptCallback(src, callback) {
+            let script = document.createElement('script');
+            script.src = src;
+            script.onload = () => callback(script);
+            document.head.append(script);
+        }
+
+        loadScriptCallback('loadedScript.js', function () {
+            // эта функция вызовется после того, как загрузится скрипт
+            console.log("Start immediately after Loaded Script"); // теперь всё работает
+            //
+        });
+
+        console.log("=================");
+
+        // Real example
+
+        function loadScript(src, callback) {
+            let script = document.createElement('script');
+            script.src = src;
+            script.onload = () => callback(script);
+            document.head.append(script);
+        }
+
+        loadScript('https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.2.0/lodash.js', script => {
+            console.log("================= after");
+            console.log(`Здорово, скрипт ${script.src} загрузился`);
+            console.log(_); // функция, объявленная в загруженном скрипте
+        });
+
+        console.log("=================");
+
+
+        // Колбэк в колбэке. Этот вариант подойдёт, когда у нас одно-два действия, но для большего количества уже не удобно
+
+        // loadScript('/my/script.js', function (script) {
+
+        //     loadScript('/my/script2.js', function (script) {
+
+        //         loadScript('/my/script3.js', function (script) {
+        //             // ...и так далее, пока все скрипты не будут загружены
+        //         });
+
+        //     })
+
+        // });
+
+        console.log("=================");
+        ////////////////////////////////////////////////////////////////////////////////////
+
+    </script>
+
+    <br>
+    <a href="../../index.html">home</a>
+
+</body>
+
+</html>

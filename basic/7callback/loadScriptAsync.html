@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Load Script</title>
+    <style>
+        body {
+            font-size: 30px
+        }
+    </style>
+</head>
+
+<body>
+
+    <script>
+        document.body.innerHTML = '';
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        document.body.innerHTML += 'Load async script' + "<br><br>"
+
+        let message1 = "my message1";
+
+        function loadScriptAsync(src) {
+            let script = document.createElement('script');
+            script.src = src;
+            document.head.append(script);
+        }
+
+        // загрузит и выполнит скрипт
+        loadScriptAsync('loadedScript.js');
+        console.log("Start immediately after Loaded Script");
+
+
+
+        console.log("=================");
+        ////////////////////////////////////////////////////////////////////////////////////
+
+
+    </script>
+
+    <br>
+    <a href="../../index.html">home</a>
+
+</body>
+
+</html>
