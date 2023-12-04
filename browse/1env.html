@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Environment</title>
+    <style>
+        body {
+            font-size: 30px
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- комментарий -->
+
+    <div id="elem">
+        <div id="elem-content">Element</div>
+    </div>
+
+    <div id="myElem3">Привет <b>Мир</b></div>
+
+    <div id="myElem5">Мигающий элемент</div>
+
+    <a href="http://example.com/file.zip">Link to example</a> <br>
+    <a href="http://google.com">link to google</a>
+
+
+    <div class="contents">
+        <ul class="book">
+            <li class="chapter">Глава 1</li>
+            <li class="chapter">Глава 2</li>
+        </ul>
+    </div>
+
+    <div id="news">
+        <h1>Срочно в номер!</h1>
+        <p>Марсиане атаковали человечество!</p>
+    </div>
+
+    <div hidden>С атрибутом "hidden"</div>
+    <div id="myElem4">С назначенным JavaScript свойством "hidden"</div>
+
+    <input type="text" id="myElem6" value="bla-bla">
+
+    <hr>
+
+
+
+    <script>
+
+        document.body.innerHTML += '';
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        document.body.innerHTML += 'Global object + DOM (Document Object Model) + BOM (Browser Object Model)' + "<br><br>"
+
+        // window, выступает в 2 ролях:
+        // Во-первых, это глобальный объект для JavaScript-кода, об этом более подробно говорится в главе Глобальный объект.
+        // Во-вторых, он также представляет собой окно браузера и располагает методами для управления им.
+        // 3. BOM ???
+
+
+        function myGlobalFunc() {
+            console.log("Hello");
+        }
+        console.log(window.innerHeight); // внутренняя высота окна браузера // window представляет innerHeight - глобальный объект
+
+
+
+        // заменим цвет фона на красный,
+        document.body.style.background = "red";  // window представляет document(DOM) - окно браузера
+        // а через секунду вернём как было
+        setTimeout(() => document.body.style.background = "", 500);
+
+
+        console.log(location.href); // показывает текущий URL // window представляет Объект location from BOM
+        console.log(navigator.userAgent); // информация о текущем браузере // window представляет Объект navigator from BOM
+        console.log(navigator.platform);  // информация о платформе  // window представляет Объект navigator from BOM
+
+
+        console.log("=================1");
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        document.body.innerHTML += 'DOM-дерево' + "<br><br>"
+
+        // HTML
+        //     Head
+        //          Title
+        //     body
+        //         #Text
+        //         #Comment
+
+
+        // Важный «особый случай» – работа с таблицами. По стандарту DOM у них должен быть <tbody>, 
+        // но в HTML их можно написать (официально) без него. В этом случае браузер добавляет <tbody> в DOM самостоятельно.
+
+        // Взаимодействие с консолью
+        // как получить узел из Elements в Console.
+        // На вкладке Elements выберите первый элемент <li>.
+        // Нажмите Esc – прямо под вкладкой Elements откроется Console.
+        // Последний элемент, выбранный во вкладке Elements, доступен в консоли как $0; предыдущий, выбранный до него, как $1 и т.д.
+        // Теперь мы можем запускать на них команды. Например $0.style.background = 'red' сделает выбранный элемент красным
+
+        // Есть и обратный путь: если есть переменная node, ссылающаяся на DOM-узел, можно использовать 
+        // в консоли команду inspect(node), чтобы увидеть этот элемент во вкладке Elements.
+
+
+        // <html> = document.documentElement
+        // <body> = document.body
+        // <head> = document.head
+        // document.[node].previousSibling/nextXibling/childNodes/firstChild/lastChild/parentNode
+
+        // Навигация только по элементам( для большинства задач текстовые узлы и узлы-комментарии нам не нужны):
+        // document.[node].previousElementSibling/nextElementSibling/children/firstElementChild/lastElementChild/parentElement
+
+        // elem.childNodes[0] === elem.firstChild
+        // elem.childNodes[elem.childNodes.length - 1] === elem.lastChild
+
+        // если скрипт находится в <head>, document.body в нём недоступен - document.body выведет  null
+
+        // childNodes похож на массив. На самом деле это не массив, а коллекция – особый перебираемый объект-псевдомассив
+        // Для перебора коллекции мы можем использовать for..of (Не используйте цикл for..in для перебора коллекций)
+        // Методы массивов не будут работать, потому что коллекция – это не массив
+        // Если нам хочется использовать именно методы массива, то мы можем создать настоящий массив из коллекции, используя Array.from:
+        // Array.from(document.body.childNodes).filter
+
+
+        // Некоторые типы DOM-элементов предоставляют для удобства дополнительные свойства, специфичные для их типа.
+
+        // Элемент <table> поддерживает следующие:
+        // table.rows – коллекция строк <tr> таблицы.
+        // table.caption/tHead/tFoot – ссылки на элементы таблицы <caption>, <thead>, <tfoot>.
+        // table.tBodies – коллекция элементов таблицы <tbody> (по спецификации их может быть больше одного).
+
+        // <thead>, <tfoot>, <tbody> предоставляют свойство rows:
+        // tbody.rows – коллекция строк <tr> секции.
+
+        // <tr>:
+        // tr.cells – коллекция <td> и <th> ячеек, находящихся внутри строки <tr>.
+        // tr.sectionRowIndex – номер строки <tr> в текущей секции <thead>/<tbody>/<tfoot>.
+        // tr.rowIndex – номер строки <tr> в таблице (включая все строки таблицы).
+
+        // <td> and <th>:
+        // td.cellIndex – номер ячейки в строке <tr>.
+
+
+        // Если у элемента есть атрибут id, то мы можем получить его вызовом document.getElementById(id), где бы он ни находился.
+        let myElem = document.getElementById('elem');
+        // сделать его фон blue
+        myElem.style.background = 'blue';
+
+        // Также есть глобальная переменная с именем, указанным в id:
+        setTimeout(() => elem.style.background = "green", 1000);
+        //elem.style.background = 'green';
+
+        // внутри id="elem-content" есть дефис, так что такой id не может служить именем переменной 
+        // но мы можем обратиться к нему через квадратные скобки: window['elem-content']
+        setTimeout(() => window['elem-content'].style.background = "yellow", 2000);
+        // window['elem-content'].style.background = 'yellow';
+
+
+        // Самый универсальный метод поиска – это elem.querySelectorAll(css), он возвращает все элементы внутри elem, удовлетворяющие данному CSS-селектору
+        // Следующий запрос получает все элементы <li>, которые являются последними потомками в <ul>:
+        // let elements = document.querySelectorAll('ul > li:last-child');
+
+
+        // Метод elem.querySelector(css) возвращает первый элемент, соответствующий данному CSS-селектору = elem.querySelectorAll(css)[0]
+
+
+        // Метод elem.matches(css) ничего не ищет, а проверяет, удовлетворяет ли elem CSS-селектору, и возвращает true или false
+        // может быть любая коллекция вместо document.body.children
+        for (let elem of document.body.children) {
+            if (elem.matches('a[href$="zip"]')) {
+                console.log("Ссылка на архив: " + elem.href);
+            }
+        }
+
+
+        // Метод elem.closest(css) ищет ближайшего предка, который соответствует CSS-селектору. Сам элемент также включается в поиск
+        let chapter = document.querySelector('.chapter'); // LI
+        console.log(chapter.closest('.book')); // UL
+        console.log(chapter.closest('.contents')); // DIV
+        console.log(chapter.closest('h1')); // null (потому что h1 - не предок)
+
+
+        // getElementsBy*
+        // На данный момент, они скорее исторические, так как querySelector более чем эффективен.
+        // вы можете встретить их в старом коде
+        // elem.getElementsByTagName(tag) ищет элементы с данным тегом и возвращает их коллекцию. Передав "*" вместо тега, можно получить всех потомков.
+        // elem.getElementsByClassName(className) возвращает элементы, которые имеют данный CSS-класс.
+        // document.getElementsByName(name) возвращает элементы с заданным атрибутом name. Очень редко используется.
+
+        // Например:
+        // // получить все элементы div в документе
+        // let divs = document.getElementsByTagName('div');
+
+
+        console.log("=================2");
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        document.body.innerHTML += 'Классы DOM-узлов' + "<br><br>"
+
+        // Object -> EventTarget
+
+        // EventTarget -> Node
+
+        // Node -> Document
+        // Node -> Element(<dif>)
+        // Node -> CharacterData
+
+        // Document -> HTMLDocument
+        // CharacterData -> Text("Hello")/Comment(<!--comment-->)
+        // Element -> HTMLElement -> HTMLBodyElement(<body>)/HTMLAnchorElement(<a href="...">)/HTMLInputElement(<input type="...">)
+
+        // Для того, чтобы узнать имя класса DOM-узла
+        console.log(document.body.constructor.name); // HTMLBodyElement
+        // Или мы можем просто привести его к строке:
+        console.log(document.body + ""); // [object HTMLBodyElement]
+        // Проверить наследование можно также при помощи instanceof:
+        console.log(document.body instanceof HTMLBodyElement); // true
+        console.log(document.body instanceof HTMLElement); // true
+        console.log(document.body instanceof Element); // true
+        console.log(document.body instanceof Node); // true
+        console.log(document.body instanceof EventTarget); // true
+
+
+        // DOM-узлы – это обычные JavaScript объекты. Для наследования они используют классы, основанные на прототипах
+        console.dir(elem)
+
+        // console.dir(elem) и console.log(elem)
+        // Для JavaScript-объектов эти команды обычно выводят одно и то же.
+        // Но для DOM-элементов они работают по-разному:
+        // console.log(elem) выводит элемент в виде DOM-дерева.
+        // console.dir(elem) выводит элемент в виде DOM-объекта, что удобно для анализа его свойств.
+
+        console.log(HTMLElement.prototype);
+        console.log(Element.prototype);
+
+        // Свойство nodeType предоставляет ещё один, «старомодный» способ узнать «тип» DOM-узла
+        // Его значением является цифра:
+        // elem.nodeType == 1 для узлов-элементов,
+        // elem.nodeType == 3 для текстовых узлов,
+        // elem.nodeType == 9 для объектов документа
+        // В современных скриптах, чтобы узнать тип узла, мы можем использовать метод instanceof
+        let myElem2 = document.body;
+        // давайте разберёмся: какой тип узла находится в myElem2?
+        console.log(myElem2.nodeType); // 1 => элемент
+        // и его первый потомок...
+        console.log(myElem2.firstChild.nodeType); // 3 => текст
+        // для объекта document значение типа -- 9
+        console.log(document.nodeType); // 9
+
+
+        // Получив DOM-узел, мы можем узнать имя его тега из свойств nodeName и tagName
+        console.log(document.body.nodeName); // BODY
+        console.log(document.body.tagName); // BODY
+
+        // Свойство tagName есть только у элементов Element.
+        // Свойство nodeName определено для любых узлов Node:
+        // для элементов оно равно tagName.
+        // для остальных типов узлов (текст, комментарий и т.д.) оно содержит строку с типом узла.
+        // Другими словами, свойство tagName есть только у узлов-элементов (поскольку они происходят от класса Element), 
+        // а nodeName может что-то сказать о других типах узлов.
+        // Например, сравним tagName и nodeName на примере объекта document и узла-комментария:
+
+        // для комментария
+        console.log(document.body.firstChild.tagName); // undefined (не элемент)
+        console.log(document.body.firstChild.nodeName); // #comment
+
+        // for document
+        console.log(document.tagName); // undefined (не элемент)
+        console.log(document.nodeName); // #document
+
+
+
+        // Свойство innerHTML позволяет получить HTML-содержимое элемента в виде строки
+        // Пример ниже показывает содержимое document.body, а затем полностью заменяет его:
+        // console.log( document.body.innerHTML ); // читаем текущее содержимое
+        // document.body.innerHTML = 'Новый BODY!'; // заменяем содержимое
+        // console.log( document.body.innerHTML );
+
+
+        // Будьте внимательны: «innerHTML+=» осуществляет перезапись
+        // Так как содержимое «обнуляется» и переписывается заново, все изображения и другие ресурсы будут перезагружены.
+
+
+        // outerHTML: HTML элемента целиком
+        console.log(myElem3.outerHTML); // <div id="elem">Привет <b>Мир</b></div>
+        console.log(myElem3.innerHTML); // Привет <b>Мир</b>
+
+        // Будьте осторожны: в отличие от innerHTML, запись в outerHTML не изменяет элемент. Вместо этого элемент заменяется целиком во внешнем контексте.
+
+
+        // Свойство innerHTML есть только у узлов-элементов.
+        // У других типов узлов, в частности, у текстовых, есть свои аналоги: свойства nodeValue и data. 
+        // Эти свойства очень похожи при использовании, есть лишь небольшие различия в спецификации. 
+        // Мы будем использовать data, потому что оно короче
+
+        // let text = document.body.firstChild;
+        // alert(text.data); // Привет
+        // let comment = text.nextSibling;
+        // alert(comment.data); // Комментарий
+
+
+        // Свойство textContent предоставляет доступ к тексту внутри элемента за вычетом всех <тегов>
+        // Срочно в номер! Марсиане атаковали человечество!
+        console.log(news.textContent);
+
+
+        // hidden  // Also: <div hidden>С атрибутом "hidden"</div>
+        // Технически, hidden работает так же, как style="display:none". Но его применение проще.
+        myElem4.hidden = true;
+
+        // Мигающий элемент
+        // setInterval(() => myElem5.hidden = !myElem5.hidden, 1000);
+
+
+        // У DOM-элементов есть дополнительные свойства, в частности, зависящие от класса:
+        console.log(myElem6.type); // "text"
+        console.log(myElem6.id); // "myElem6" значение атрибута «id» для всех элементов (HTMLElement)
+        console.log(myElem6.value); // "bla-bla" значение для <input>, <select> и <textarea> (HTMLInputElement, HTMLSelectElement…)
+
+        console.log("=================3");
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+    </script>
+
+    <br>
+    <a href="../index.html">home</a>
+
+</body>
+
+</html>

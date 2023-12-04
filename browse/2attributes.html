@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Attributes</title>
+    <style>
+
+        body {
+            font-size: 30px;
+            color: blueviolet;
+            margin: 5px;
+        }
+
+        #example {
+            width: 300px;
+            height: 200px;
+            border: 25px solid #E8C48F;
+            padding: 20px;
+            overflow: auto;
+        }
+
+    </style>
+</head>
+
+<body class="main page">
+
+    <div id="elem" about="Elephant">My Elephant</div>
+    <input id="input" type="checkbox" checked> checkbox
+    <div id="div" style="color:red;font-size:120%">Hello</div>
+
+    <div id="example">
+        ...Текст...
+    </div>
+
+    <hr>
+
+    <script>
+
+        document.body.innerHTML += '';
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        document.body.innerHTML += 'DOM-свойства' + "<br><br>"
+
+        // Для узлов-элементов большинство стандартных HTML-атрибутов автоматически становятся свойствами DOM-объектов
+        // Например, для такого тега <body id="page"> у DOM-объекта будет такое свойство body.id="page".
+        // Но преобразование атрибута в свойство происходит не один-в-один!
+
+        // Например, создадим новое свойство для document.body: 
+
+
+        document.body.myData = {
+            name: 'Caesar',
+            title: 'Imperator'
+        };
+        console.log(document.body.myData.title); // Imperator
+
+        // Мы можем добавить и метод:
+        document.body.sayTagName = function () {
+            console.log(this.tagName);
+        };
+        document.body.sayTagName(); // BODY (значением "this" в этом методе будет document.body)
+
+        // Также можно изменять встроенные прототипы, такие как Element.prototype и добавлять новые методы ко всем элементам:
+        Element.prototype.sayHi = function () {
+            console.log(`Hello, I'm ${this.tagName}`);
+        };
+        document.documentElement.sayHi(); // Hello, I'm HTML
+        document.body.sayHi(); // Hello, I'm BODY
+
+
+
+        // когда у элемента есть id или другой стандартный атрибут, создаётся соответствующее свойство. Но этого не происходит, если атрибут нестандартный.
+        // учтите, что стандартный атрибут для одного тега может быть нестандартным для другого. Например, атрибут "type" 
+        // является стандартным для элемента <input> (HTMLInputElement), но не является стандартным для <body> (HTMLBodyElement)
+        // Когда стандартный атрибут изменяется, соответствующее свойство автоматически обновляется. Это работает и в обратную сторону (за некоторыми исключениями)
+
+        // Все атрибуты доступны с помощью следующих методов:
+        // elem.hasAttribute(name) – проверяет наличие атрибута.
+        // elem.getAttribute(name) – получает значение атрибута.
+        // elem.setAttribute(name, value) – устанавливает значение атрибута.
+        // elem.removeAttribute(name) – удаляет атрибут.
+
+        // Кроме этого, получить все атрибуты элемента можно с помощью свойства elem.attributes: 
+        // коллекция объектов, которая принадлежит ко встроенному классу Attr со свойствами name и value
+
+        for (let attr of elem.attributes) { // (4) весь список
+            console.log(`${attr.name} = ${attr.value}`);
+        }
+
+
+        // DOM-свойства не всегда являются строками. Например, свойство input.checked (для чекбоксов) имеет логический тип:
+        console.log(input.getAttribute('checked')); // значение атрибута: пустая строка
+        console.log(input.checked); // значение свойства: true
+
+        // Атрибут style – строка, но свойство style является объектом:
+        // строка
+        console.log(div.getAttribute('style')); // color:red;font-size:120%
+        // объект
+        console.log(div.style); // [object CSSStyleDeclaration]
+        console.log(div.style.color); // red
+
+        console.log("=================1");
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        document.body.innerHTML += 'TODO: Нестандартные атрибуты, dataset' + "<br><br>"
+        document.body.innerHTML += 'TODO: Изменение документа' + "<br><br>"
+
+        // TODO: Нестандартные атрибуты, dataset
+        // TODO: Изменение документа
+
+        console.log("=================2");
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        document.body.innerHTML += 'Стили и классы' + "<br><br>"
+
+        // elem.className соответствует атрибуту "class"
+        // elem.classList – это специальный объект с методами для добавления/удаления одного класса
+        console.log(document.body.className); // main page
+        document.body.classList.add('article');
+        console.log(document.body.className); // main page article
+
+        for (let name of document.body.classList) {
+            console.log(name); // main, page, article
+        }
+
+        // Методы classList:
+        // elem.classList.add/remove("class") – добавить/удалить класс.
+        // elem.classList.toggle("class") – добавить класс, если его нет, иначе удалить.
+        // elem.classList.contains("class") – проверка наличия класса, возвращает true/false.
+
+
+        // Свойство elem.style – это объект, который соответствует тому, что написано в атрибуте "style"
+
+        // Свойства из одного слова записываются так же, с маленькой буквы:
+        // background  => elem.style.background
+        // top         => elem.style.top
+        // opacity     => elem.style.opacity
+
+        // Для свойств из нескольких слов используется camelCase:
+        // background-color  => elem.style.backgroundColor
+        // z-index           => elem.style.zIndex
+        // border-left-width => elem.style.borderLeftWidth
+
+        // Например:
+        // document.body.style.backgroundColor = 'green';
+
+
+        // Сброс стилей
+        // если мы запустим этот код, <body> "мигнёт"
+        document.body.style.display = "none"; // скрыть
+        setTimeout(() => document.body.style.display = "", 300); // возврат к нормальному состоянию
+
+
+        // Вычисленные стили: getComputedStyle
+        // getComputedStyle(element, [pseudo])
+
+        let computedStyle = getComputedStyle(document.body);
+        // сейчас мы можем прочитать отступ и цвет
+        console.log(computedStyle.marginTop); // 5px
+        console.log(computedStyle.color); // rgb(138, 43, 226)
+
+
+
+        console.log("=================3");
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        document.body.innerHTML += 'TODO: Размеры и прокрутка элементов' + "<br><br>"
+        document.body.innerHTML += 'TODO: Размеры и прокрутка окна' + "<br><br>"
+        document.body.innerHTML += 'TODO: Координаты' + "<br><br>"
+
+        // TODO: Размеры и прокрутка элементов
+        // TODO: Размеры и прокрутка окна
+        // TODO: Координаты
+
+
+        console.log("=================3");
+
+////////////////////////////////////////////////////////////////////////////////////
+
+    </script>
+
+    <br>
+    <a href="../index.html">home</a>
+
+</body>
+
+</html>
