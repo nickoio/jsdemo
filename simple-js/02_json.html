@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en-US">
+ 
+<head>
+    <meta charset="UTF-8">
+    <title>json demo</title>
+	<link rel="stylesheet" href="css/style02.css">
+</head>
+ 
+
+<body>
+
+	<p id="user"></p>
+
+	<script>
+		var s = '{"first_name" : "John", "last_name" : "Smith", "location" : "London", "other_location" : "Berlin"}';
+		var obj = JSON.parse(s);
+		document.getElementById("user").innerHTML = 
+		"Name: " + obj.first_name + " " + obj.last_name + "<br>" + 
+		"Location: " + obj.location + "<br>" + 
+		"Other Location: " + obj["other_location"];
+	</script>	
+	
+	
+	<script src="js/script02.js"></script>
+	
+</body>
+
+</html>
