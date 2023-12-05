@@ -5,15 +5,43 @@
     <meta charset="UTF-8">
     <title>Events</title>
     <style>
-
         body {
             font-size: 30px;
+        }
+
+        body * {
+            margin: 10px;
+            border: 1px solid blue;
         }
     </style>
 </head>
 
-<body class="main page">
+<body>
 
+    <input value="Нажми меня" onclick="alert('Клик!')" type="button"> <br>
+    <input type="button" onclick="countRabbits()" value="Считать кроликов!"> <br>
+    <button onclick="alert(this.innerHTML)">Нажми меня</button> <br>
+
+    <input id="elem1" type="button" value="Нажми меня 1"> <br>
+
+    <input id="elem2" type="button" value="Нажми меня 2" /> <br>
+
+    <input type="button" value="Нажми меня 3" id="elem3"> <br>
+
+    <button id="elem4">Нажми меня 4</button> <br>
+
+    <button id="elem5">Нажми меня 5</button> <br>
+
+    <form onclick="alert('form')">FORM
+        <div onclick="alert('div')">DIV
+            <p onclick="alert('p')">P</p>
+        </div>
+    </form>
+    <br>
+
+    <a href="/" onclick="return false">Нажми здесь</a>    <br>
+    <br>
+    <a href="/" onclick="event.preventDefault()">или здесь</a>    <br>
 
     <hr>
 
@@ -23,13 +51,153 @@
 
         ////////////////////////////////////////////////////////////////////////////////////
 
-        document.body.innerHTML += 'ssss' + "<br><br>"
+        document.body.innerHTML += 'Обработчики событий' + "<br><br>"
 
+        // Использование атрибута HTML
+        function countRabbits() {
+            for (let i = 1; i <= 3; i++) {
+                alert("Кролик номер " + i);
+            }
+        }
+
+
+        // Использование свойства DOM-объекта
+        elem1.onclick = function () {
+            alert('Спасибо');
+        };
+
+
+        // addEventListener
+        function handler1() {
+            alert('Спасибо!');
+        };
+
+        function handler2() {
+            alert('Спасибо ещё раз!');
+        }
+
+        elem2.onclick = () => alert("Привет");
+        elem2.addEventListener("click", handler1); // Спасибо!
+        // Для удаления нужно передать именно ту функцию-обработчик которая была назначена.
+        // так не сработает: () => alert("Привет")
+        elem2.addEventListener("click", handler2); // Спасибо ещё раз! 
+
+
+        // Существуют события, которые нельзя назначить через DOM-свойство, но можно через addEventListener
+        // document.onDOMContentLoaded = function () {
+        //     alert("DOM построен"); // не будет работать
+        // };
+
+        document.addEventListener("DOMContentLoaded", function () {
+            console.log("DOM построен"); // а вот так сработает
+        });
+
+
+
+        // Когда происходит событие, браузер создаёт объект события, записывает в него детали и передаёт его в качестве аргумента функции-обработчику.
+        // Пример ниже демонстрирует получение координат мыши из объекта события:
+        elem3.onclick = function (event) {
+            // вывести тип события, элемент и координаты клика
+            alert(event.type + " на " + event.currentTarget);
+            alert("Координаты: " + event.clientX + ":" + event.clientY);
+        };
+
+        // event.currentTarget
+        // Элемент, на котором сработал обработчик. Значение – обычно такое же, как и у this, 
+        // но если обработчик является функцией-стрелкой или при помощи bind привязан другой объект в качестве this, 
+        // то мы можем получить элемент из event.currentTarget.
+
+        // При назначении обработчика в HTML, тоже можно использовать объект event, вот так:
+        // <input type="button" onclick="alert(event.type)" value="Тип события">
+
+        // Мы можем назначить обработчиком не только функцию, но и объект при помощи addEventListener. 
+        // В этом случае, когда происходит событие, вызывается метод объекта handleEvent
+        elem4.addEventListener('click', {
+            handleEvent(event) {
+                alert(event.type + " на " + event.currentTarget);
+            }
+        });
+
+
+        // Мы также можем использовать класс для этого:
+        class Menu {
+            handleEvent(event) {
+                switch (event.type) {
+                    case 'mousedown':
+                        elem5.innerHTML = "Нажата кнопка мыши";
+                        break;
+                    case 'mouseup':
+                        elem5.innerHTML += "...и отжата.";
+                        break;
+                }
+            }
+        }
+        let menu = new Menu();
+        elem5.addEventListener('mousedown', menu);
+        elem5.addEventListener('mouseup', menu);
+
+        console.log("=================3");
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        document.body.innerHTML += 'Всплытие' + "<br><br>"
+
+        // Когда на элементе происходит событие, обработчики сначала срабатывают на нём, потом на его родителе, затем выше и так далее, вверх по цепочке предков.
+        // Почти все события всплывают. событие focus не всплывает. В дальнейшем мы увидим и другие примеры.
+        // Всплытие идёт с «целевого» элемента прямо наверх. 
+        // По умолчанию событие будет всплывать до элемента <html>, а затем до объекта document, а иногда даже до window, вызывая все обработчики на своём пути
+
+        // Самый глубокий элемент, который вызывает событие, называется целевым элементом, и он доступен через event.target
+        // Отличия от this (=event.currentTarget):
+        // event.target – это «целевой» элемент, на котором произошло событие, в процессе всплытия он неизменен.
+        // this – это «текущий» элемент, до которого дошло всплытие, на нём сейчас выполняется обработчик.
+
+        // любой промежуточный обработчик может решить, что событие полностью обработано, и остановить всплытие.
+        // Для этого нужно вызвать метод event.stopPropagation().  <button onclick="event.stopPropagation()">Кликни меня</button>
+        // event.stopImmediatePropagation(). Он не только предотвращает всплытие, но и останавливает обработку событий на текущем элементе
 
 
         console.log("=================3");
 
-////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        document.body.innerHTML += 'TODO: Погружение' + "<br><br>"
+        document.body.innerHTML += 'TODO: Делегирование событий' + "<br><br>"
+
+        console.log("=================3");
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        document.body.innerHTML += 'Действия браузера по умолчанию' + "<br><br>"
+
+        // Отмена действия браузера
+        // Многие события автоматически влекут за собой действие браузера.
+        // Например:
+        // Клик по ссылке инициирует переход на новый URL.
+        // Нажатие на кнопку «отправить» в форме – отсылку её на сервер.
+        // Зажатие кнопки мыши над текстом и её движение в таком состоянии – инициирует его выделение.
+
+
+        // Есть два способа отменить действие браузера:
+        // Основной способ – это воспользоваться объектом event. Для отмены действия браузера существует стандартный метод event.preventDefault().
+        // Если же обработчик назначен через on<событие> (не через addEventListener), то также можно вернуть false из обработчика.
+        // <a href="/" onclick="return false">Нажми здесь</a>
+        // или
+        // <a href="/" onclick="event.preventDefault()">здесь</a>
+
+        document.body.innerHTML += 'TODO: Действия браузера по умолчанию ...' + "<br><br>"
+        document.body.innerHTML += 'TODO: Генерация пользовательских событий' + "<br><br>"
+        document.body.innerHTML += 'TODO: Интерфейсные события' + "<br><br>"
+        document.body.innerHTML += 'TODO: Формы, элементы управления' + "<br><br>"
+        document.body.innerHTML += 'TODO: Разное' + "<br><br>"
+        document.body.innerHTML += 'TODO: Тематические разделы' + "<br><br>"
+
+        console.log("=================3");
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+
+
 
     </script>
 
