@@ -11,6 +11,13 @@ table, th, td {
   border:1px solid black;
 }
 
+/* table right alignment */
+table.myright {
+    margin-right: 0px;
+    margin-left: auto;
+    border-collapse: collapse;
+}
+
 
 div.mycontainer {
   width:100%;
@@ -91,7 +98,7 @@ To do this, use the colspan attribute on the <th> element:
 
 To add a caption to a table, use the <caption> tag:
   -->
-<table style="width:30%">
+<table style="width:30%" table class="myright">
   <caption>Employee names</caption>
   <tr>
     <th colspan="2">Name</th>

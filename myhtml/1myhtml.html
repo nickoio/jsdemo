@@ -1,29 +1,21 @@
 <!DOCTYPE html>
 <html lang="en-US">
 
+<!-- 
+https://habr.com/ru/companies/vk/articles/319956/
+https://proglang.su/css
+https://developer.mozilla.org/ru/docs/Web/HTML
+https://htmlacademy.ru/courses?utm_source=hh&utm_medium=special&utm_campaign=mif_programmirovani_102020
+https://www.w3schools.com/js/default.asp
+https://www.w3schools.com/css/default.asp
+https://www.w3schools.com/html/default.asp
+https://htmlweb.ru/
+https://html5book.ru/
+ -->
+
 <head>
-    <meta charset="UTF-8">
-	<!-- Define keywords for search engines: -->
-	<meta name="keywords" content="HTML, CSS, JavaScript">
-	<!-- Setting the viewport to make your website look good on all devices: -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-	<!-- Define a description of your web page: -->
-	<meta name="description" content="Free Web tutorials">
-	<meta name="author" content="John Doe">
-	
-    <title>myhtml</title>
-	<link rel="icon" type="image/x-icon" href="../img/favicon.ico">
+ 	<title>myhtml</title>
 
-	<!-- Refresh document every 30 seconds: -->
-	<!-- <meta http-equiv="refresh" content="30"> -->
-
-
-
-
-    <!-- 
-	An internal CSS is defined in the <head> section of an HTML page, within a <style> element. 
-	-->
-	
 	 <!-- 
 	<style>
 	body {background-color: powderblue;}
@@ -33,7 +25,7 @@
 	-->
 	
 	<!-- 
-	Here, an unvisited link will be green with no underline. A visited link will be pink with no underline. 
+	Here, an unvisited link will be green with no underline. A visited link will be brown with no underline. 
 	An active link will be yellow and underlined. In addition, when mousing over a link (a:hover) it will become red and underlined:
 	-->
 <style>	
@@ -43,7 +35,7 @@ a:link {
   text-decoration: none;
 }
 a:visited {
-  color: pink;
+  color: brown;
   background-color: transparent;
   text-decoration: none;
 }
@@ -85,14 +77,16 @@ The text inside a <pre> element is displayed in a fixed-width font (usually Cour
 
 Setting the style of an HTML element, can be done with the style attribute.
 <tagname style="property:value;">
+
+Double quotes around attribute values are the most common in HTML, but single quotes can also be used.
  -->
 
 <body style="background-color:powderblue";>
 
-<h1 style="color:blue;">This is a heading</h1>
+<h1 style="color:blue;">This is a heading</h1>  <!-- Browsers automatically add some white space (a margin) before and after a heading. -->
 <p style="background-color:tomato;">This is a paragraph.</p>
 <p style="font-family:courier;">This is a paragraph.</p>
-<p style="font-size:160%;">This is a paragraph.</p>
+<p style="font-size:200%;">This is a paragraph.</p>
 <p style="text-align:center;">Centered paragraph.</p>
 
 <b>This text is bold</b>  <br>
@@ -100,13 +94,12 @@ Setting the style of an HTML element, can be done with the style attribute.
 <i>This text is italic</i>  <br>
 <em>This text is emphasized</em>  <br>
 <small>This is some smaller text.</small>  <br>
-<p>Do not forget to buy <mark>milk</mark> today.</p>  <br>
-<p>My favorite color is <del>blue</del> red.</p>  <br>
-<p>My favorite color is <del>blue</del> <ins>red</ins>.</p>  <br>
-<p>This is <sub>subscripted</sub> text.</p>  <br>
-<p>This is <sup>superscripted</sup> text.</p>  <br>
-<p>The <abbr title="World Health Organization">WHO</abbr> was founded in 1948.</p>  <br>
-<bdo dir="rtl">This text will be written from right to left</bdo>  <br>
+<p>Do not forget to buy <mark>milk</mark> today.</p>  
+<p>My favorite color is <del>blue</del> <ins>red</ins>.</p> 
+<p>This is <sub>subscripted</sub> text.</p>  
+<p>This is <sup>superscripted</sup> text.</p>  
+<p>The <abbr title="World Health Organization">WHO</abbr> was founded in 1948.</p> 
+<bdo dir="rtl">This text will be written from right to left</bdo>  <br> <br>
 
 <address>
 Written by John Doe.<br>
@@ -115,13 +108,11 @@ Example.com<br>
 Box 564, Disneyland<br>
 USA
 </address>
-  <br>
 
 <pre>
   My Bonnie lies over the ocean.
-
-  My Bonnie lies over the sea.
-  My Bonnie lies over the ocean.
+  		My Bonnie lies over the sea.
+  	My Bonnie lies over the ocean.
 </pre>
 
 <hr>
@@ -134,15 +125,17 @@ Hue is a degree on the color wheel from 0 to 360. 0 is red, 120 is green, and 24
 Saturation is a percentage value. 0% means a shade of gray, and 100% is the full color.
 Lightness is also a percentage value. 0% is black, and 100% is white.
 -->
-<h1 style="background-color:rgb(255, 99, 71);">rgb(255, 99, 71)</h1>
-<h1 style="background-color:#ff6347;">#ff6347</h1>
-<h1 style="background-color:hsl(9, 100%, 64%);">hsl(9, 100%, 64%)</h1>
+<h3 style="background-color:rgb(255, 99, 71);">rgb(255, 99, 71)</h3>
+<h3 style="background-color:#ff6347;">#ff6347</h3>
+<h3 style="background-color:hsl(9, 100%, 64%);">hsl(9, 100%, 64%)</h3>
 
+<p>In addition to the predefined color names, colors can be specified using RGB, HEX, HSL, or even transparent colors 
+	using RGBA or HSLA color values, with an Alpha channel - which specifies the opacity for a color</p>
 <p>Same as color name "Tomato", but 50% transparent:</p>
-<h1 style="background-color:rgba(255, 99, 71, 0.5);">rgba(255, 99, 71, 0.5)</h1>
-<h1 style="background-color:hsla(9, 100%, 64%, 0.5);">hsla(9, 100%, 64%, 0.5)</h1>
+<h3 style="background-color:rgba(255, 99, 71, 0.5);">rgba(255, 99, 71, 0.5)</h3>
+<h3 style="background-color:hsla(9, 100%, 64%, 0.5);">hsla(9, 100%, 64%, 0.5)</h3>
 
-<p>In addition to the predefined color names, colors can be specified using RGB, HEX, HSL, or even transparent colors using RGBA or HSLA color values, with an Alpha channel - which specifies the opacity for a color</p>
+
 
 <hr>
 
@@ -154,10 +147,9 @@ Lightness is also a percentage value. 0% is black, and 100% is white.
 <h5 style="background-color:SlateBlue;">SlateBlue</h5>
 <h5 style="background-color:Violet;">Violet</h5>
 <h5 style="background-color:LightGray;">LightGray</h5>
+<h5 style="border:2px solid Tomato;background-color:LightGray;">LightGray With Tomato Border</h5>
+<h5 style="border:2px solid Blue;">Blue Border</h5>
 
-<h1 style="border:2px solid Tomato;">Hello World</h1>
-<h1 style="border:2px solid DodgerBlue;">Hello World</h1>
-<h1 style="border:2px solid Violet;">Hello World</h1>
 
 <hr>
 
@@ -190,6 +182,9 @@ The image will float to the right of the text.</p>
 
 <p><img src="../img/smiley.gif" alt="Smiley face" style="float:left;width:42px;height:42px;">
 The image will float to the left of the text.</p>
+
+<br>
+<hr>
 
 
 <!-- Image as a Link	

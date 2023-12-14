@@ -3,15 +3,31 @@
 
 <head>
     <meta charset="UTF-8">
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->  <!-- ??? -->
+ 	<!-- Define keywords for search engines: -->
+     <meta name="keywords" content="HTML, CSS, JavaScript">
+     <!-- Setting the viewport to make your website look good on all devices: -->
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+     <!-- Define a description of your web page: -->
+     <meta name="description" content="Free Web tutorials">
+     <meta name="author" content="John Doe">
+     <!-- Refresh document every 30 seconds: -->
+     <!-- <meta http-equiv="refresh" content="30"> -->
+
     <title>MyIndex - learn.javascript.ru</title>
-    <style>
+
+
+	<link rel="icon" type="image/x-icon" href="img/favicon.ico">
+	<!-- <link rel="stylesheet" href="styles.css"> 	-->
+
+
+
+    <style>  /* <style type="text/css"> */
         body {
-            font-size: 30px
+            font-size: 21px; /* between lines ?? */
         }
 
         a {
-            font-size: 20px
+            font-size: 20px;
         }
     </style>
 </head>
@@ -23,10 +39,7 @@
 
 Click CTRL + U in an HTML page, or right-click on the page and select "View Page Source"
 
-Double quotes around attribute values are the most common in HTML, but single quotes can also be used.
 
-HTML headings are defined with the <h1> to <h6> tags.
-Browsers automatically add some white space (a margin) before and after a heading.
  -->
 
 <body>
@@ -61,6 +74,8 @@ Browsers automatically add some white space (a margin) before and after a headin
     <a href="browse/2attributes.html">Attributes</a> <br>
     <a href="browse/3events.html">Browser Events</a> <br>
     
+    <hr>
+    <a href="simple-js/index.html">Simple-js Project</a> <br>
 
 	<hr>
 	<a href="myhtml/1myhtml.html">myhtml demo</a> <br>
@@ -68,14 +83,12 @@ Browsers automatically add some white space (a margin) before and after a headin
     <a href="myhtml/3myclasses.html">myclasses demo</a> <br>
     <a href="myhtml/4myforms.html">myforms demo</a> <br>
 
-	<hr>
-    <a href="simple-js/index.html">Simple-js Project</a> <br>
+	
     
 
     <hr>
-    
-    <h1 style="font-size:60px;">Heading 1</h1>
-	<h1 style="font-size:60px;">Heading 6</h1>
+    <h1 style="font-size:25px;">Heading 1</h1>
+	<h3 style="font-size:25px;">Heading 3</h3>
 
 	<img src="img/w3schools.jpg" alt="W3Schools.com" width="104" height="142">    <!--alternative text (alt)  -->
 	<!-- 
@@ -86,8 +99,9 @@ Browsers automatically add some white space (a margin) before and after a headin
 	--> 
 
     <br>
-	<p title="I'm a tooltip" style="color:red;">This is a red paragraph with tooltip.</p>
-	<hr>
+	<p title="I'm a tooltip" style="color:red;font-size:15px;">This is a red paragraph with tooltip.</p>
+    <div title="I'm a tooltip" style="font-size:15px;">This is a div element with tooltip.</div>
+
 
 </body>
 
